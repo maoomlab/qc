@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QC 가이드 신규 규칙</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="hero__eyebrow">Kia Owner’s Manual QC Guide</p>
+      <h1>QC 가이드 신규 규칙</h1>
+      <p class="hero__description">첨부 Markdown 파일의 조건문, 용어, 조작 동사, 문체, 서식 규칙을 웹 문서 형태로 정리한 미니멀 스타일 가이드입니다.</p>
+    </header>
+
+    <nav class="toc" aria-label="목차">
+      <h2>목차</h2>
+      <ol>
+        <li><a href="#section-1">1. 조건문</a></li>
+<li><a href="#section-2">2. might, may, can</a></li>
+<li><a href="#section-3">3. BER 공통문구</a></li>
+<li><a href="#section-4">4. 조작 및 제어</a></li>
+<li><a href="#section-5">5. 구동 및 제동</a></li>
+<li><a href="#section-6">6. 알림 및 상태</a></li>
+<li><a href="#section-7">7. 부품 및 명칭</a></li>
+<li><a href="#section-8">8. 문체 및 구조</a></li>
+<li><a href="#section-9">9. 서식 및 규칙</a></li>
+      </ol>
+    </nav>
+
+    <section class="section-card" id="section-1">
+<h2>1. 조건문</h2>
+<p>조건을 나열할 때는 <strong>When, If를 반복하기보다</strong>, 상태·행위 자체를 간결하게 명시하는 것이 더 직관적이고 일관적이며, 가독성과 정확성이 향상됨</p>
+<h3>■ 불필요한 반복 제거</h3>
+<p>각 항목이 이미 조건임이 명확하므로 when, if 반복 사용을 줄여 문장을 간결하게 정리</p>
+</section><section class="section-card" id="section-2">
+<h2>2. might, may, can</h2>
+<h3>■ might</h3>
+<p>가능한 위험을 설명하는 경우, 이는 반드시 발생하는 결과가 아니므로 문맥상 및 법적 관점에서 더 안전한 표현인 <strong>‘might’</strong> 를 사용</p>
+<h3>■ may</h3>
+<p>허용 의미와 가능성 의미가 섞여 있어 안전 경고 문맥에서는 혼란을 줄 수 있어 권장되지 않음</p>
+<ol><li>허용 (permit): ~해도 된다</li><li>가능성 (possibility): ~할 수도 있다</li></ol>
+<h3>■ can</h3>
+<p>직접적인 기계적 결과를 설명할 때 사용</p>
+<pre>예시:
+- Do not use the accelerator pedal to hold your vehicle on an incline. This can cause the transmission to overheat.
+- 변속기의 과도한 사용 → 과열을 나타내므로 can 사용 가능</pre>
+</section><section class="section-card" id="section-3">
+<h2>3. BER 공통문구</h2>
+<h3>■ 유럽 수평전개</h3>
+<p>Have your vehicle inspected by a professional workshop. Kia recommends visiting an authorized Kia dealer or service partner.</p>
+<ol><li>점검 유도 표현: consult, contact, call, ask, checked, serviced → <strong>inspect로 통일</strong></li><li>방문 권유 표현: ~that you visit, ~to visit, ~checked → <strong>visiting으로 통일</strong></li></ol>
+<h3>■ 북미 수평전개</h3>
+<p>Have your vehicle inspected by an authorized Kia dealer.</p>
+<ul><li>점검 관련 용어 모두 inspect로 통일 후, &quot;Kia recommends visiting~&quot; 이하 방문 권유 문구 삭제</li></ul>
+<pre>예외 문구:
+- 연구소 요청으로 공통 문구 적용이 어려운 경우, 용어별 의미 구별하여 문장 작성
+- 공통 문구 적용 시 문맥상 의미 변경이 발생할 경우 수정대상에서 제외
+- 스마트키 교체 문구 제외 (공식 딜러에서만 할 수 있는 작업)</pre>
+</section><section class="section-card" id="section-4">
+<h2>4. 조작 및 제어</h2>
+<h3>인터페이스별 동작 동사 구분</h3>
+<p>물리 버튼(<strong>Press</strong>), 가상 터치(<strong>Tap</strong>), 다이얼(<strong>Turn</strong>) 등 인터페이스 특성에 맞는 동사를 사용해 사용자 조작을 직관적이고 일관되게 표현</p>
+<h3>■ Press</h3>
+<ul><li>물리적 버튼일 경우</li><li>문맥상 자연스러운 경우 ENGINE START/STOP 버튼 또는 EV 버튼에는 <strong>press</strong>를 사용</li><li>버튼을 누르는 동작 없이 위치/상태를 설정하도록 안내할 때는 <strong>set</strong>을 사용하거나 동사를 생략</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Press the ENGINE START/STOP button ON.</td><td><code>Press the ENGINE START/STOP button in the (x) position.</code></td></tr><tr><td>Turn the ENGINE START/STOP button ON.</td><td><code>With the ENGINE START/STOP button pressed in the (x) position</code></td></tr><tr><td>Turn the ENGINE START/STOP button to the ON position.</td><td><code>Set the ENGINE START/STOP button to the ON position without pressing it.</code></td></tr></tbody></table></div>
+<h3>■ Tap</h3>
+<ul><li>화면상의 가상 버튼 또는 항목에는 <strong>tap</strong>을 사용</li><li>사용자가 화면상의 가상 버튼을 조작하는 동작에는 <strong>select</strong>를 사용하지 않음</li></ul>
+<pre>예외문구:
+- 아이콘을 탭한 후 메뉴 항목을 선택하도록 안내할 때는 tap, then select 사용 가능</pre>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Touch the [XYZ icon]</td><td><code>Tap [XYZ icon] and select [XYZ menu item] on the infotainment system screen.</code></td></tr><tr><td>Select the [XYZ button]</td><td><code>With EV selected, you can…</code></td></tr></tbody></table></div>
+<h3>■ Turn / Switch</h3>
+<ul><li>스위치 및 다이얼에는 문맥상 가장 자연스러운 동사를 사용</li><li>인터페이스 특성에 따라 <strong>push, turn, set</strong> 등을 구분하여 사용</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Press the dial clockwise.</td><td><code>Turn the dial clockwise.</code></td></tr><tr><td>Tap the switch.</td><td><code>Push the switch down.</code></td></tr><tr><td>Select the control knob.</td><td><code>Set the control to AUTO.</code></td></tr></tbody></table></div>
+</section><section class="section-card" id="section-5">
+<h2>5. 구동 및 제동</h2>
+<h3>기능별 동사 매칭</h3>
+<p>Brake (<strong>Engage</strong>), EPB (<strong>Apply</strong>), Gear (<strong>Shift</strong>) 등 기능 특성에 맞는 동사를 사용하여 조작 의미를 명확하고 일관되게 표현</p>
+<h3>■ Engage / Disengage</h3>
+<ul><li>브레이크 또는 브레이크 페달에는 <strong>engage, disengage</strong>를 사용</li></ul>
+<pre>예외문구:
+- 차량 경고 메시지에 “press brake pedal”이 표시되는 경우에는 차량 문구와 일치시키기 위해 사용 가능</pre>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Press the brake pedal.</td><td><code>Engage the brake pedal.</code></td></tr><tr><td>Depress the brake pedal.</td><td><code>Disengage the brake pedal.</code></td></tr><tr><td>Step on the brake pedal.</td><td><code>The driver engaged the brakes.</code></td></tr></tbody></table></div>
+<h3>■ Apply</h3>
+<ul><li>주차 브레이크 또는 전자식 주차 브레이크(EPB)에는 <strong>apply, release</strong>를 사용</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Press the parking brake.</td><td><code>Apply the parking brake.</code></td></tr><tr><td>Depress the EPB switch.</td><td><code>Release the EPB.</code></td></tr></tbody></table></div>
+<h3>■ Shift</h3>
+<ul><li>기어 조작에는 <strong>shift the gear to + 위치</strong> 형식을 사용</li><li>기어 위치 표현은 <strong>to D(Drive)</strong> 형식으로 통일</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Shift to D (Drive).</td><td><code>Shift the gear to D (Drive).</code></td></tr><tr><td>Move the gear to D (Drive).</td><td><code>Shift the gear to P (Park).</code></td></tr></tbody></table></div>
+</section><section class="section-card" id="section-6">
+<h2>6. 알림 및 상태</h2>
+<p>시스템 상태 및 반응 표현은 기능별 표준 용어를 사용하여 일관성 있게 표기</p>
+<h3>■ Displays / Illuminates</h3>
+<ul><li>Indicator light 및 warning message에는 <strong>displays, illuminates</strong>를 사용</li><li>경고메세지 및 표시등에는 &quot;appears&quot; 또는 &quot;turns on/ON&quot; 표현을 사용하지 않음</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>The warning message appears.</td><td><code>The warning message displays on the cluster.</code></td></tr><tr><td>The indicator light turns ON.</td><td><code>The indicator light illuminates.</code></td></tr><tr><td>The message turns on.</td><td><code>The message displays when the system is activated.</code></td></tr></tbody></table></div>
+<h3>■ ON / OFF / OK</h3>
+<ul><li>차량 상태를 나타내는 경우에는 <strong>ON, OFF, OK</strong>를 모두 대문자로 표기</li><li>차량 상태 표현을 강조하기 위해 모든 문자를 대문자로 사용</li><li>해당 규칙은 차량 자체의 상태 표현에만 적용</li></ul>
+<pre>예외문구:
+- Indicator light, warning message, 개별 기능/모드에는 turn ON, turn OFF 표현을 사용하지 않음</pre>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>The vehicle is in the on position.</td><td><code>The vehicle is in the ON position.</code></td></tr><tr><td>Turn ON the indicator light.</td><td><code>Check that the system status is OK.</code></td></tr><tr><td>The ignition is off.</td><td><code>The ignition is OFF.</code></td></tr></tbody></table></div>
+</section><section class="section-card" id="section-7">
+<h2>7. 부품 및 명칭</h2>
+<p>Trunk/Cargo area 구분, Light/Lamp 명칭 통일 등 차량 유형 및 기능에 따라 용어를 명확하게 구분하여 사용</p>
+<h3>■ Trunk / Cargo area</h3>
+<ul><li>세단의 후방 적재 공간은 <strong>trunk</strong> 사용</li><li>SUV 및 Hatchback의 후방 적재 공간은 <strong>cargo area</strong> 사용</li><li>luggage compartment, rear cargo area 사용 지양</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Store the luggage in the rear cargo area.</td><td><code>Store the luggage in the cargo area.</code></td></tr><tr><td>Open the luggage compartment.</td><td><code>Open the trunk before loading cargo.</code></td></tr></tbody></table></div>
+<h3>■ Light / Lamp</h3>
+<ul><li>현지화된 관용적 표현을 사용하여 한 문장 내 lamp와 light를 혼용해 사용 시, 일관성이 부족해 보인다는 기아 정보팀 의견</li></ul>
+<h4>&lt;유형 사례&gt;</h4>
+<div class="table-wrap"><table>
+<thead>
+  <tr>
+    <th>구분</th>
+    <th>AS-IS</th>
+    <th>TO-BE</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="8">Exterior</td>
+    <td>Headlamp</td>
+    <td>Headlight assembly</td>    
+  </tr>
+  <tr>
+    <td>Headlight</td>
+    <td>Headlights</td>    
+  </tr>
+  <tr>
+    <td>Tail lamp</td>
+    <td>Taillight assembly</td>    
+  </tr>
+  <tr>
+    <td>Tail light</td>
+    <td>Taillights</td>    
+  </tr>
+  <tr>
+    <td>Backup lamp</td>
+    <td>Reverse light assembly</td>    
+  </tr>
+  <tr>
+    <td>Backup light</td>
+    <td>Reverse lights</td>    
+  </tr>
+  <tr>
+    <td>Brake lamp</td>
+    <td>Brake light assembly</td>    
+  </tr>
+  <tr>
+    <td>Brake lamp</td>
+    <td>Brake lights</td>    
+  </tr>
+  <tr>
+    <td rowspan="4">Interior</td>
+    <td>Interior lamps</td>
+    <td>Interior lights</td>
+  </tr>
+  <tr>
+    <td>Interior lihgt</td>
+    <td>Interior lights</td>    
+  </tr>
+  <tr>
+    <td>Map lamp</td>
+    <td>Map lights</td>    
+  </tr>
+  <tr>
+    <td>Map light</td>
+    <td>Map lights</td>
+  </tr>
+  <tr>
+  <td></td>
+  <td></td>
+  <td></td>
+  </tr>
+  </tbody>
+
+</table></div>
+</section><section class="section-card" id="section-8">
+<h2>8. 문체 및 구조</h2>
+<p>능동태 사용, 직접 지칭(<strong>you</strong>), 상황 기술(<strong>While you are driving</strong>)등 사용자 중심으로 명확하게 문장을 작성</p>
+<h3>■ Active voice</h3>
+<ul><li>수동태 보다 <strong>능동태(active voice)</strong>를 사용하여 주체와 동작을 명확하게 표현</li><li>사용자가 해야 하는 동작이나 시스템 반응을 직접적이고 간결하게 작성</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>You are warned by the system.</td><td><code>The system warns you.</code></td></tr><tr><td>The settings can be adjusted manually.</td><td><code>You can adjust the settings manually.</code></td></tr><tr><td>The brakes are automatically applied by the system.</td><td><code>The system applies the brakes automatically.</code></td></tr></tbody></table></div>
+<h3>■ You</h3>
+<ul><li>운전자를 제 3자로 표현하지 않고 <strong>you</strong>로 직접 지칭</li><li>the driver는 사용자가 아닌 제 3자를 지칭하는 느낌을 줄 수 있으므로 사용자 안내 문맥에서는 지양</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>The system warns the driver.</td><td><code>The system warns you.</code></td></tr><tr><td>Safe driving is the driver&#x27;s responsibility.</td><td><code>Safe driving is your responsibility.</code></td></tr></tbody></table></div>
+<h3>■ While you are driving~</h3>
+<ul><li>While driving은 일부 문맥에서 차량이 스스로 운전하는 것처럼 모호하게 들릴 수 있음</li><li>주체를 명확히 하기 위해 <strong>while you are driving</strong>을 사용</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>Do not adjust the settings while driving.</td><td><code>Do not adjust the settings while you are driving.</code></td></tr><tr><td>Keep both hands on the steering wheel while driving.</td><td><code>Keep both hands on the steering wheel while you are driving.</code></td></tr></tbody></table></div>
+</section><section class="section-card" id="section-9">
+<h2>9. 서식 및 규칙</h2>
+<p>숫자 표기, 속도 표현, 단위 간 공백, 기능명 표기 등 기술 문서에서 반복적으로 등장하는 서식 규칙을 일관되게 적용</p>
+<h3>■ 숫자 표기: Numerals/Words</h3>
+<ul><li>기술 문서에서는 숫자의 가독성과 빠른 인식을 위해 일반적으로 numerals (1, 2, 3) 사용</li><li>측정값, 기술 데이터, 부품 수량, 절차 반복 횟수에는 숫자 크기와 관계없이 numerals 사용</li><li>일반 개념을 설명하거나 숫자 표기가 문맥상 어색한 경우에는 wrods (one, two, three) 사용 가능</li></ul>
+<p>&lt;표현 기준&gt;</p>
+<div class="table-wrap"><table><thead><tr><th>Category</th><th>Rule</th><th>Example</th></tr></thead><tbody><tr><td>Measurements &amp; Technical Data</td><td>숫자가 10 미만이어도 항상 numerals 사용</td><td>5mm &lt;br/&gt;12V &lt;br/&gt;3 seconds</td></tr><tr><td>Counting Items / Components</td><td>부품 수량 및 절차 반복 횟수는 시각적으로 잘 보이도록 numerals 사용 권장</td><td>2 clips &lt;br/&gt;15 bolts &lt;br/&gt;Press the button 3 times</td></tr><tr><td>General Text</td><td>일반 개념 설명에서는 필요 시 words 사용 가능</td><td>one side &lt;br/&gt;one of the following &lt;br/&gt;third party</td></tr></tbody></table></div>
+<h3>■ 차량 속도 표현: above/below</h3>
+<ul><li>차량 속도를 설명할 때는 above 또는 below 사용</li><li>higher than/lower than, faswter than/slower than은 사용하지 않음</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>The vehicle speed is higher than 6 mph.</td><td><code>The vehicle speed is above 6 mph.</code></td></tr><tr><td>The vehicle speed is slower than 10 mph.</td><td><code>The vehicle speed is below 10 mph.</code></td></tr></tbody></table></div>
+<h3>■ 숫자 + 단위: Number + Unit</h3>
+<ul><li>대부분의 단위는 숫자와 단위 사이에 공백 사용</li><li>금액, 온도, 전압, 전류는 예외적으로 공백을 사용하지 않음</li></ul>
+<p>&lt;예외단위&gt;</p>
+<div class="table-wrap"><table><thead><tr><th>Type</th><th>Example</th></tr></thead><tbody><tr><td>Money</td><td><code>$100</code></td></tr><tr><td>Temperature</td><td><code>100°F</code></td></tr><tr><td>Volts</td><td><code>9V</code></td></tr><tr><td>Amps</td><td><code>10A</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>130–200cm</td><td><code>130–200 cm</code></td></tr><tr><td>$ 100</td><td><code>$100</code></td></tr><tr><td>9 V</td><td><code>9V</code></td></tr><tr><td>10 A</td><td><code>10A</code></td></tr></tbody></table></div>
+<h3>■ 문장 표현</h3>
+<ul><li>차량 전방 대상을 설명할 때는 vehicle ahead 사용</li><li>vehicle in front는 사용하지 않음</li><li>ahead of you와 같은 변형 표현에도 동일하게 적용</li></ul>
+<div class="table-wrap"><table><thead><tr><th>잘못된 예</th><th>올바른 예</th></tr></thead><tbody><tr><td>The vehicle in front stops suddenly.</td><td><code>The vehicle ahead stops suddenly.</code></td></tr><tr><td>The vehicle in front of you changes lanes.</td><td><code>The vehicle ahead of you changes lanes.</code></td></tr></tbody></table></div>
+</section>
+
+    <footer class="footer">
+      <p>Generated from QC_가이드_신규.md</p>
+    </footer>
+  </main>
+</body>
+</html>
