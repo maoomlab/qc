@@ -101,8 +101,8 @@
 
 | 잘못된 예 | 올바른 예 | 
 |---|---|
-| Press the ENGINE START/STOP button ON. | `Press the ENGINE START/STOP button in the (x) position.` |
-| Turn the ENGINE START/STOP button ON. | `With the ENGINE START/STOP button pressed in the (x) position` |
+| Press the ENGINE START/STOP button ON. | `Press the ENGINE START/STOP button in the ON position.` |
+| Turn the ENGINE START/STOP button ON. | `With the ENGINE START/STOP button pressed in the OFF position` |
 | Turn the ENGINE START/STOP button to the ON position. | `Set the ENGINE START/STOP button to the ON position without pressing it.` |
 
 
