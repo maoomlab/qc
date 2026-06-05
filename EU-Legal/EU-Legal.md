@@ -50,17 +50,17 @@
 
 <br>
 <br>
+
 ## :dart: 실무자 이해 포인트
 - [X] 유럽(EU)는 기능보다 사용자의 오사용 방지에 대해 더 강한 중점을 두고 있음
 - [X] 에어백 라벨 내용이 향지에 맞게 적용되었는지 확인
 - [X] 아래 경고 문구가 적용되었는지 확인
 </br>
 
-  ><span style="color:#DC2626">**NEVER use a rearward facing child restraint on a seat protected by an ACTIVE AIRBAG in front of it.** <br>
+  > <span style="color:#DC2626">**NEVER use a rearward facing child restraint on a seat protected by an ACTIVE AIRBAG in front of it.** <br>
   > **DEATH or SERIOUS INJURY to the CHILD can occur.** </span><br>
   > *앞좌석에 에어백이 작동하는 경우, 절대로 후방 장착형 유아용 카시트를 사용하지 마십시오.* <br>
   > *어린이가 사망하거나 심각한 부상을 입을 수 있습니다.*
-
 
  ![alt text](images/image-2.png)
 </br>
