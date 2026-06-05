@@ -572,10 +572,7 @@
 
 <br>
 <br>
-
 ![alt text](images/image-42.png)
-</br>
-
 
 <br>
 <br>
@@ -591,11 +588,7 @@
 <br>
 <br>
 ![alt text](images/image-45.png)
-</br>
 
-
-
-<br>
 <br>
 <br>
 
@@ -619,10 +612,7 @@
 <br>
 <br>
 ![alt text](images/image-46.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -633,11 +623,7 @@
 <br>
 <br>
 ![alt text](images/image-47.png)
-</br>
 
-
-
-<br>
 <br>
 <br>
 
@@ -655,10 +641,7 @@
 <br>
 <br>
 ![alt text](images/image-48.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -671,10 +654,7 @@
 <br>
 <br>
 ![alt text](images/image-49.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -690,10 +670,7 @@
 <br>
 <br>
 ![alt text](images/image-50.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -706,9 +683,7 @@
 <br>
 <br>
 ![alt text](images/image-51.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -724,10 +699,7 @@
 <br>
 <br>
 ![alt text](images/image-52.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -739,12 +711,8 @@
   - KMC 차종은 VESS 버튼이 없는 사양으로 양산되고 있음
 <br>
 <br>
-
 ![alt text](images/image-53.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -777,4 +745,4 @@
 <br>
 <br>
 ![alt text](images/image-54.png)
-</br>
+
