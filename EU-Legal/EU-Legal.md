@@ -62,11 +62,11 @@
   > *앞좌석에 에어백이 작동하는 경우, 절대로 후방 장착형 유아용 카시트를 사용하지 마십시오.* <br>
   > *어린이가 사망하거나 심각한 부상을 입을 수 있습니다.*
 
- ![alt text](images/image-2.png)
-</br>
-
-
 <br>
+<br>
+
+![alt text](images/image-2.png)
+
 <br>
 <br>
 
@@ -83,11 +83,13 @@
   - <span style="color:#DC2626">**사용자가 경고를 충분히 그리고 즉각적으로 인지할수 있는지가 가장 중요한 판단 기준**</span>
 
 <br>
+<br>
 
 ![alt text](images/image-3.png)
-</br>
+
 <br>
 <br>
+
 ## :dart: 실무자 이해 포인트
 - [X] SBR 적용 범위 사양 검토
     - 차종별 시트 사양과 연계하여 전 좌석 (앞/뒤/중앙) 적용 상태 확인
@@ -96,13 +98,12 @@
     - 최근 개정된 유럽 법규에 따른 경고 시간 변화 등 상시 업데이트 체크 및 반영
 - [X] 쥬요 확인 요소
     - 경고 작동 조건 / 경고등 지속시간 / 경고등 형상 및 표시 유무
-</br>
-
-![alt text](images/image-4.png)
-</br>
-
 
 <br>
+<br>
+
+![alt text](images/image-4.png)
+
 <br>
 <br>
 
@@ -117,14 +118,11 @@
 - [X] 유지관리의 중요성
   - <span style="color:#DC2626">**안전벨트는 필수로 장착해야 하지만, 그와 더불어 사용 과정에서의 유지보수가 필수 조건임을 명시**</span>
 
-
+<br>
 <br>
 
 ![alt text](images/image-6.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -137,11 +135,10 @@
 </br>
 
 <br>
+<br>
 
 ![alt text](images/image-7.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -174,9 +171,10 @@
 | i-Size 규정 적용 | ISOFIX 장착을 필수 조건으로 지정 | ISOFIX 방식이 아니지만 여전히 EVE 유럽법규에서는 안전벨트 고정 방식을 허용|
 
 <br>
+<br>
 
 ![alt text](images/image-12.png)
-</br>
+
 <br>
 <br>
 
@@ -186,10 +184,10 @@
 
 - [X] 연구소에서 받은 인증 자료와 반드시 일치해야 하며, 추천 CRS 브랜드 정보, i-Size 심볼 포함 여부까지 고려하여 초안 작성
 <br>
+<br>
 
   ![alt text](images/image-13.png)
-</br>
-<br>
+
 <br>
 <br>
 
@@ -206,11 +204,10 @@
   - 운전자의 조작 정보 및 차량 상태가 정밀하게 기록되어, 법적 분쟁 시 핵심 증거 자료로 활용 가능
 
 <br>
+<br>
 
    ![alt text](images/image-15.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -222,11 +219,11 @@
 - [X] 법규 표준 영문 표기법 (철자, 문장부호, 대소문자 등)과 100% 일치 필요
 
 <br>
+<br>
+
 
 ![alt text](images/image-16.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -242,11 +239,11 @@
   - 브레이크 패드 마모 시, 제동 거리가 급격히 증가하여 대형 사고로 직결 위험이 큼
 - [X] 법적 고지 의무 및 책임 강화
   - 경고등 점등 조건과 주의사항을 매뉴얼에 명시하도록 법규로 강제함으로써 <span style="color:#DC2626">운전자가 인지하고 적기에 차량을 점검할 수 있도록 유도 (관리 책임 이행)</span>
-
-   ![alt text](images/image-21.png)
-</br>
-
 <br>
+<br>
+
+![alt text](images/image-21.png)
+
 <br>
 <br>
 
@@ -262,11 +259,11 @@
   - 매뉴얼 내 점검/경고 관련 세부 항목 누락 여부 확인
   - 점검주기 표 내 **Brake discs and pads**란 항목과 알맞은 주기로 적용되었는지 확인
 
-   ![alt text](images/image-22.png)
-</br>
-
-
 <br>
+<br>
+
+![alt text](images/image-22.png)
+
 <br>
 <br>
 
@@ -282,11 +279,10 @@
 - [X] 규제 범위의 확대
   - 법적 의무가 장치의 단순 장착 단계에서, 운행 전 주기에 걸친 성능 유지 및 관리로 강화되는 추세
 <br>
+<br>
 
 ![alt text](images/image-23.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -300,9 +296,7 @@
 <br>
 
 ![alt text](images/image-24.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -321,11 +315,10 @@
 - [X] <span style="color:#DC2626">위의 조치를 진행하기 위해서는 차량 전원 손실 시에도 작동이 필요하기 때문에 **배터리 점검이 중요**</span>
 
 <br>
+<br>
 
 ![alt text](images/image-25.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -340,11 +333,12 @@
   - 프로세싀 조작 후 구조 센터 연결까지의 단계와 소요 시간
 - [X] 사고 대응을 위한 유럽 전역의 안정적인 긴급 구조를 보장하는 표준 안전 시스템임을 명확히 전달
 <br>
+<br>
 
 ![alt text](images/image-26.png)
-</br>
 
-
+<br>
+<br>
 
 ## UAE - Emergency Call (eCall) System (if equipped) 
 - [X] 시스템 목적
@@ -355,10 +349,12 @@
   - 프로세스: 버튼 조작 시점부터 구조 센터 연결까지의 단계별 흐름 정보 제공
 - [X] 단순 통신 기능을 넘어, 극한 환경에서의 생존 가능성 확보를 위한 필수 안전 시스템임을 명확히 전달할것
 <br>
+<br>
 
 ![alt text](images/image-27.png)
-</br>
 
+<br>
+<br>
 
 ## Russia - ERA-GLONASS System (if equipped) 
 - [X] 시스템 목적
@@ -369,12 +365,10 @@
   - 프로세스: 버튼 조작 시점부터 러시아 현지 구조 센터 연동 및 국가 승인까지의 흐름 정보
 - [X] 미국 GPS 의존도를 탈피한 독자적 위성 인프라를 통해, 국가적 통제력을 확보하고 극한 환경에서의 생명 보호를 실현하는 핵심 안전시스템
 <br>
+<br>
 
 ![alt text](images/image-28.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -394,11 +388,10 @@
 - [X] 전 생애 주기 책임 실현
   - <span style="color:#DC2626">**차량 구매** 부터 폐기까지 환경 영향을 최소화하는 차량 생애 주기 책임제의 개념 도입</span>
 <br>
+<br>
 
 ![alt text](images/image-30.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -408,9 +401,9 @@
 - [X] 단순 엔진만이 아닌, 브레이크 분진이나 타이어 마모, 냉매, 환경차까지 환경 규제 범위는 확대되고 있음
 - [X] EURO7 사양 해당 시, 엔진명 구분과 EURO7에 필요한 점검주기 챕터의 포인트들 숙지할 것
 <br>
+<br>
 
 ![alt text](images/image-31.png)
-</br>
 
 <br>
 <br>
@@ -418,11 +411,10 @@
 - [X] EURO7 법규가 적용되는 차종인 경우, 다른 파트에도 연관된 내용이 표시됨
 - [X] 엔진명 표기, GPF(Gasoline Particulate Filter) for EURO7 engine 등 연관되는 다른 파트의 내용에 대한 인식이 필요함
 <br>
+<br>
 
 ![alt text](images/image-32.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -438,11 +430,10 @@
 - [X] ADAS, Digital Key, eCall, ROA, Smart Key, Bluetooth, Wi-Fi <br>
      📍전부 무선 장치
 <br>
+<br>
 
 ![alt text](images/image-33.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -453,11 +444,10 @@
 - [X] 판매 국가가 유럽 국가들에 포함되는가? (**CE 인증 내용 무조건 포함!**)
 - [X] 판매 국가에 영국(UK)이 포함되어 있는가? (**UKCA 인증 내용 무조건 포함!**)
 <br>
+<br>
 
 ![alt text](images/image-34.png)
-</br>
 
-<br>
 <br>
 <br>
 
@@ -469,12 +459,10 @@
   - 영국 시장에서 판매 가능한 제품이라는 인증 적합성 표시
   - 원래 영국은 EU 소속이었기 때문에 CE 인증마크만 사용했으나, 브렉시트(Brexit) 이후 EU에서 탈퇴하면서 영국용 별도 인증 마크로 분리됨
 <br>
+<br>
 
 ![alt text](images/image-35.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -500,12 +488,9 @@
 - [X] BULB 램프의 겨우, 각 램프별 종류에 맞게 교체하는 방법 서술 필요
 <br>
 <br>
-<br>
+
 ![alt text](images/image-36.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -523,11 +508,9 @@
   📍현대 시대의 자동차는 고도의 전자 보안 시스템으로 진화중
 <br>
 <br>
+
 ![alt text](images/image-37.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -537,11 +520,9 @@
 - [X] 따라서 디지털 키의 등록/해제 방법은 사용자 정보 제공과 더불어, 차량 보안을 유지하는 가장 핵심 요소
 <br>
 <br>
+
 ![alt text](images/image-39.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -558,11 +539,9 @@
   - 사용자 금지 행위(위험행동)에 대한 명시적 경고 시스템 구축 및 지속적인 주의 환기
 <br>
 <br>
+
 ![alt text](images/image-40.png)
-</br>
 
-
-<br>
 <br>
 <br>
 
@@ -572,6 +551,7 @@
 
 <br>
 <br>
+
 ![alt text](images/image-42.png)
 
 <br>
@@ -587,6 +567,7 @@
   - 중요 주의 및 경고 사항은 가독성과 강조를 위해 섹션 내 여러곳에서 반복적으로 노출됨
 <br>
 <br>
+
 ![alt text](images/image-45.png)
 
 <br>
@@ -611,6 +592,7 @@
   - 에너지 효율
 <br>
 <br>
+
 ![alt text](images/image-46.png)
 
 <br>
@@ -622,6 +604,7 @@
 - [X] 더불어 냉매 제원인 Air conditioning systme과도 내용이 연계되어있으니 한 번 더 체크
 <br>
 <br>
+
 ![alt text](images/image-47.png)
 
 <br>
@@ -640,6 +623,7 @@
      📍충전 라벨 정보를 기재하게 함으로서 단순 참고 자료가 아닌 충전 라벨에 대해 설명하는 법규 전달 수단이 됨
 <br>
 <br>
+
 ![alt text](images/image-48.png)
 
 <br>
@@ -653,6 +637,7 @@
   - 전기차(EV): AC/DC 커넥터 오접속 및 호환성 문제를 방지하기 위해 주유구 라벨과 동일한 수준의 엄격한 정보 제공 필요
 <br>
 <br>
+
 ![alt text](images/image-49.png)
 
 <br>
@@ -669,6 +654,7 @@
   - <span style="color:#DC2626">따라서 평상시 혹은 위급시에도 사용자가 도어 핸들에 접근할 수 있도록 오너스 매뉴얼에 안내 요구됨</span>
 <br>
 <br>
+
 ![alt text](images/image-50.png)
 
 <br>
@@ -682,6 +668,7 @@
 - [X] 실제 사용자는 매뉴얼을 읽지 않고 바로 문을 열려고 하는 경우가 더 많기 때문에, 유럽 법규는 직관적으로 탈출 가능한 지에 대해서 관리
 <br>
 <br>
+
 ![alt text](images/image-51.png)
 
 <br>
@@ -698,6 +685,7 @@
 - [X] 유럽이 전기차 시대에 새롭게 규제하는 보행자 안전 규제로 이해하면 좋음
 <br>
 <br>
+
 ![alt text](images/image-52.png)
 
 <br>
