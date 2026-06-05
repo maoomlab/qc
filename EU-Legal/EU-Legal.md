@@ -66,6 +66,7 @@
 
 <br>
 <br>
+<br>
 
 # SBR (Seat Belt Reminder)
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-16.07*</span>
@@ -99,6 +100,7 @@
 
 <br>
 <br>
+<br>
 
 # 폴딩 시트 사용 주의 문구
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 Folding 시트, 쿠션, 시트백 적용 시 S/belt 77/541/EEC ECE R-16*</span>
@@ -129,6 +131,7 @@
 
 ![alt text](images/image-7.png)
 
+<br>
 <br>
 <br>
 
@@ -168,14 +171,13 @@
 <br>
 
 - [X] 복잡한 테이블이지만 오너스 매뉴얼에 구성하여, 사용자가 추측하여 설치하거나 혼란스럽지 않도록 정보 제공이 필요
-
 - [X] 사고 발생 시 제조사가 어떤 안전 정보를 제공했는지 여부까지 이어질 수 있음 (책임 소재)
-
 - [X] 연구소에서 받은 인증 자료와 반드시 일치해야 하며, 추천 CRS 브랜드 정보, i-Size 심볼 포함 여부까지 고려하여 초안 작성
 <br>
 
 ![alt text](images/image-13.png)
 
+<br>
 <br>
 <br>
 
@@ -211,6 +213,7 @@
 
 <br>
 <br>
+<br>
 
 # 브레이크 마찰제 (점검 주기 관련)
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 458/2011/EU R-13.09, R-13H*</span>
@@ -230,7 +233,6 @@
 
 <br>
 <br>
-
 
 ## :dart: 실무자 이해 포인트
 - [X] 제조사의 책임 영역 확대
@@ -278,6 +280,7 @@
 
 ![alt text](images/image-24.png)
 
+<br>
 <br>
 <br>
 
@@ -348,7 +351,7 @@
 
 <br>
 <br>
-
+<br>
 
 
 # EURO7
@@ -462,6 +465,7 @@
 
 <br>
 <br>
+<br>
 
 # 디지털 키
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-116*</span>
@@ -490,6 +494,7 @@
 
 ![alt text](images/image-39.png)
 
+<br>
 <br>
 <br>
 
@@ -534,6 +539,7 @@
 
 ![alt text](images/image-45.png)
 
+<br>
 <br>
 <br>
 
@@ -602,6 +608,7 @@
 
 <br>
 <br>
+<br>
 
 # 오토 플러시 도어 핸들
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 Euro NCAP escue 평가 프로토콜 (ver.1.0)*</span>
@@ -631,6 +638,7 @@
 
 <br>
 <br>
+<br>
 
 # AVAS 정지 기능
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 개정 R-138.01*</span>
@@ -658,6 +666,7 @@
 
 ![alt text](images/image-53.png)
 
+<br>
 <br>
 <br>
 
