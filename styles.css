@@ -1073,11 +1073,12 @@ body {
 }
 
 .toc-link {
+  --depth-pad: 12px;
   display: block;
   font-size: 0.78rem;
   color: var(--text-secondary);
   text-decoration: none;
-  padding: 6px 12px;
+  padding: 6px 12px 6px var(--depth-pad);
   border-left: 2px solid transparent;
   margin-left: -1px;
   white-space: nowrap;
@@ -1089,7 +1090,7 @@ body {
 
 .toc-link:hover {
   color: var(--text-primary);
-  padding-left: 16px;
+  padding-left: calc(var(--depth-pad) + 4px);
 }
 
 .toc-link.active {
@@ -1098,9 +1099,20 @@ body {
   border-left-color: var(--accent-color);
 }
 
-/* TOC Depth margins for nested headings */
+/* TOC Depth margins and weights for nested headings */
+.toc-depth-1 {
+  --depth-pad: 12px;
+  font-weight: 700; /* Bold only for top-level headings (H1) */
+}
+
+.toc-depth-2 {
+  --depth-pad: 22px;
+  font-weight: 400; /* Regular weight for sub-headings (H2) */
+}
+
 .toc-depth-3 {
-  padding-left: 12px;
+  --depth-pad: 32px;
+  font-weight: 400; /* Regular weight for sub-headings (H3) */
 }
 
 /* Overlay */
