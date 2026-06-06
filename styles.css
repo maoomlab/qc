@@ -1207,6 +1207,7 @@ body {
   margin-bottom: 0.6em;
   letter-spacing: -0.5px;
   position: relative;
+  scroll-margin-top: 100px; /* Offset to prevent sticky header from obscuring headings */
 }
 
 .markdown-body h1 {
