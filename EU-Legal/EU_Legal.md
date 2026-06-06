@@ -1,13 +1,13 @@
 # 내부 법규 교육(유럽일반/표준안)
 
 ## 교육 항목의 핵심
-    1. 유럽 법규는 차량 기능뿐 아니라, 사용자의 이해와 사용 방식까지 규제한다
+- 유럽 법규는 차량 기능뿐 아니라, 사용자의 이해와 사용 방식까지 규제한다
 
 ## 전달하고 싶은 내용
-    1. 왜 유럽 법규는 특정 문구와 경고를 요구할까?
-    2. 왜 오너스 매뉴얼까지 법규의 대상이 되는가?
-    3. 단순한 문장이 실제 안전 리스크가 되는 경우
-    4. 실무자의 입장에서 생각해보기
+- 왜 유럽 법규는 특정 문구와 경고를 요구할까?
+- 왜 오너스 매뉴얼까지 법규의 대상이 되는가?
+- 단순한 문장이 실제 안전 리스크가 되는 경우
+- 실무자의 입장에서 생각해보기
 
 
 
@@ -31,7 +31,7 @@
 
 # PAB 후향 CRS 금지
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-94*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 ECE R-94
 - Seating and safety restraints 챕터 중, **Air bag warning labels**내 문구 적용
   
 ## :open_book: 왜 유럽은 "후향 카시트"를 이렇게 강하게 금지할까?
@@ -61,7 +61,7 @@
 
 # SBR (Seat Belt Reminder)
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-16.07*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 ECE R-16.07
 - Seating and safety restraints 챕터 중, **Seat belt restraint system**내 문구 적용
 
 ## :open_book: 왜 유럽은 안전벨트 경고 시간을 계속 늘릴까?
@@ -90,7 +90,7 @@
 
 # 폴딩 시트 사용 주의 문구
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 Folding 시트, 쿠션, 시트백 적용 시 S/belt 77/541/EEC ECE R-16*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 Folding 시트, 쿠션, 시트백 적용 시 S/belt 77/541/EEC ECE R-16
 - Seating and safety restraints 챕터 중, **Care of seat belts**내 문구 적용
 
 ## :open_book: 왜 폴딩 시트에도 법규가 적용되는걸까?
@@ -116,7 +116,7 @@
 
 # CRS 테이블 정보 제공
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 77/541/EEC ECE R-16*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 77/541/EEC ECE R-16
 - Seating and safety restraints 챕터 중, **Child Restraint System**내 문구 적용
 
 ## :open_book: 왜 유럽 법규는 유아용 카시트에 대한 정보까지 요구할까?
@@ -150,7 +150,7 @@
 
 # EDR (사고 기록 장치)
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-116*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 ECE R-116
 - Introduction 챕터 중, **Vehicle data collection and Event Data Recorders**내 문구 적용
   
 ## :open_book: 사고 직전 차량은 무엇을 기록하고 있을까?
@@ -176,7 +176,7 @@
 
 # 브레이크 마찰제 (점검 주기 관련)
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 458/2011/EU R-13.09, R-13H*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 458/2011/EU R-13.09, R-13H
 - Driving your vehicle 챕터 중, **Disc brakes wear indicator**내 문구 적용
 - Maintenance 챕터 중, **Scheduled maintenance service**내 문구 적용
   
@@ -207,7 +207,7 @@
 
 # 배출가스 저감 장치 (점검 주기 관련)
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2000/4/EC ECE R-21*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 2000/4/EC ECE R-21
 - Maintenance 챕터 중, **Scheduled maintenance service**내 문구 적용
   
 ## :open_book: 배출가스 저감 장치의 관리 책임이 운전자까지 부여되는 이유는?
@@ -233,7 +233,7 @@
 
 # eCall System
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2017/758 The Eurasian Economic Union (EAEU) and the UN-R 144 for approval within the UN*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 2017/758 The Eurasian Economic Union (EAEU) and the UN-R 144 for approval within the UN
 - What to do in an emergency 챕터 중, 향지별 **eCall system** 내용으로 구성
   
 ## :open_book: 왜 국가마다 서로 다른 eCall 시스템을 운영할까? <br> :open_book: 왜 유럽 법규는 eCall 배터리 점검주기까지 관리할까?
@@ -286,7 +286,7 @@
 
 
 # EURO7
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 Euro 6d / Euro 6e / Euro 7에 대한 개정 조항 (EU) 2023/443*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 Euro 6d / Euro 6e / Euro 7에 대한 개정 조항 (EU) 2023/443
 - 메뉴얼 전반(여러 챕터)에 걸쳐 관련 법규 적용
   
 ## :open_book: 왜 EURO7은 엔진 규제를 넘어서고 있을까?
@@ -319,7 +319,7 @@
 
 # 유럽 CE/UKCA 인증
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 UKCA 인증, 1995/5/EC 2014/53/EU*</span>
+## 오너스 매뉴얼 적용 :writing_hand:*법규 조항 UKCA 인증, 1995/5/EC 2014/53/EU
 - What to do in an emergency 챕터 중, **Declaration of Conformity for Jack**로 적용
   
 ## :open_book: 왜 오너스 매뉴얼에 무선 인증 문구까지 넣어야 할까?
@@ -355,7 +355,7 @@
 
 # 외장램프 교환 방법
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 76/756/EEC ECE R-48*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 76/756/EEC ECE R-48
 - Maintenance 챕터 중, **Light bulbs** 내용으로 구성
   
 ## :open_book: LED로 거의 바뀌고 있는 시대임에도 왜 아직 법규는 Bulb replacement를 요구할까?
@@ -378,7 +378,7 @@
 
 # 디지털 키
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-116*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 ECE R-116
 - Seating and safety restraints 챕터 중, **Digital Key 2(사양 적용 시)** 로 적용
   
 ## :open_book: 왜 요즘 차량은 스마트폰 하나만 잃어버려도 보안 이슈가 될까?
@@ -403,7 +403,7 @@
 
 # 파워윈도우/선루프/파티션에 대한 주의
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2000/4/EC ECE R-21*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 2000/4/EC ECE R-21
 - Opening and closing 챕터 중, **Windows, Sunroof(사양별)** 로 적용
   
 ## :open_book: 왜 창문 하나에도 안전 법규가 들어갈까?
@@ -437,7 +437,7 @@
 
 # 냉매 라벨
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 불화온실가스(F-가스) 규제 개정*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 불화온실가스(F-가스) 규제 개정
 - Controls and features 챕터 중, **Air conditioning(A/C) refrigerant label** 내용으로 구성
   
 ## :open_book: 왜 냉매 라벨까지 유럽 법규가 관리할까?
@@ -467,7 +467,7 @@
 
 # 전기차 충전라벨 정보
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2014/94/EU*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 2014/94/EU
 - Specifications 챕터 중, **How to check the symbol on the charging labe(for Europe)**로 적용
   
 ## :open_book: 유럽에서는 고객이 처음 보는 충전기를 사용할 때, 어떻게 해야할까?
@@ -493,7 +493,7 @@
 
 # 오토 플러시 도어 핸들
 
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 Euro NCAP escue 평가 프로토콜 (ver.1.0)*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 조항 Euro NCAP escue 평가 프로토콜 (ver.1.0)
 - Opening and closing 챕터 중, **Door locks** 하위로 적용
   
 ## :open_book: 문 손잡이가 그렇게 중요한가?
@@ -516,7 +516,7 @@
 
 
 # AVAS 정지 기능
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 개정 R-138.01*</span>
+## 오너스 매뉴얼 적용 :writing_hand:*법규 개정 R-138.01
 - Electric vehicle guide 챕터 중, **Virtual Engine Sound System(VESS)** 내용으로 구성
   
 ## :open_book: 전기차가 너무 조용하면 무슨 일이 생길까?
@@ -539,7 +539,7 @@
 
 
 # 전조등 점등 자동 제어
-## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 UN R48.08*</span>
+## 오너스 매뉴얼 적용 :writing_hand: 법규 UN R48.08
 - Driver adjustment 챕터 중, **Lightings > Headlights (Low Beam)** 내용으로 구성
   
 ## :open_book: 만약 운전자가 전조등 컨트롤을 잊어버리면 누가 대신 켜줄까?
