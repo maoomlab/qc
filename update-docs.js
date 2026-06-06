@@ -24,6 +24,37 @@ const categoryMap = {
   'qc-guide': '기술문서 작성 가이드'
 };
 
+// Emoji Shortcode Translation Map
+const emojiMap = {
+  'open_book': '📖',
+  'dart': '🎯',
+  'writing_hand': '✍️',
+  'pushpin': '📌',
+  'o': '⭕',
+  'x': '❌',
+  'bulb': '💡',
+  'warning': '⚠️',
+  'info': 'ℹ️',
+  'check': '✔️',
+  'white_check_mark': '✅',
+  'link': '🔗',
+  'bookmark': '🔖',
+  'file_folder': '📁',
+  'calendar': '📅',
+  'gear': '⚙️',
+  'wrench': '🔧',
+  'shield': '🛡️',
+  'lock': '🔒',
+  'key': '🔑'
+};
+
+function replaceEmojiShortcodes(text) {
+  if (!text) return '';
+  return text.replace(/:([a-zA-Z0-9_+-]+):/g, (match, name) => {
+    return emojiMap[name] || match;
+  });
+}
+
 // System folders/files to ignore
 const ignoredFolders = ['images', 'brain', 'node_modules', '.git', '.github', '.gemini', 'docs'];
 const ignoredFiles = ['index.html', 'styles.css', 'style.css', 'app.js', 'update-docs.js', 'watch-docs.js', 'docs.json', 'package.json', 'package-lock.json', 'readme.md', '.ds_store'];
@@ -71,14 +102,14 @@ function scanFolder() {
       
       // Title: Extract first `# ` heading
       const titleMatch = fileContent.match(/^#\s+(.+)$/m);
-      const title = titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md');
+      const title = replaceEmojiShortcodes(titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md'));
       
       // Description: Extract first non-empty paragraph
       const paragraphs = fileContent.split('\n')
         .map(p => p.trim())
         .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
       
-      const description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
+      const description = replaceEmojiShortcodes(paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.');
       
       // Category routing for original files at root
       let finalCategory = fileInfo.category;

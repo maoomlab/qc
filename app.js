@@ -45,6 +45,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarOverlay = document.getElementById('sidebar-overlay');
   const mobileActiveDoc = document.querySelector('.mobile-active-doc');
 
+  // Emoji Shortcode Translation Map
+  const emojiMap = {
+    'open_book': '📖',
+    'dart': '🎯',
+    'writing_hand': '✍️',
+    'pushpin': '📌',
+    'o': '⭕',
+    'x': '❌',
+    'bulb': '💡',
+    'warning': '⚠️',
+    'info': 'ℹ️',
+    'check': '✔️',
+    'white_check_mark': '✅',
+    'link': '🔗',
+    'bookmark': '🔖',
+    'file_folder': '📁',
+    'calendar': '📅',
+    'gear': '⚙️',
+    'wrench': '🔧',
+    'shield': '🛡️',
+    'lock': '🔒',
+    'key': '🔑'
+  };
+
+  function replaceEmojiShortcodes(text) {
+    if (!text) return '';
+    return text.replace(/:([a-zA-Z0-9_+-]+):/g, (match, name) => {
+      return emojiMap[name] || match;
+    });
+  }
+
   // Initialize Theme
   initTheme();
   
@@ -181,14 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
           
           // Extract first heading
           const titleMatch = fileContent.match(/^#\s+(.+)$/m);
-          const title = titleMatch ? titleMatch[1].trim() : fileInfo.path.split('/').pop().replace('.md', '');
+          const title = replaceEmojiShortcodes(titleMatch ? titleMatch[1].trim() : fileInfo.path.split('/').pop().replace('.md', ''));
           
           // Extract first long paragraph for description
           const paragraphs = fileContent.split('\n')
             .map(p => p.trim())
             .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
           
-          const description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
+          const description = replaceEmojiShortcodes(paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.');
           
           // Determine Category Name
           let finalCategory = fileInfo.category;
@@ -613,6 +644,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
       return `<li>${text}</li>`;
+    };
+
+    // Rule 4: Custom Text Renderer (translates emoji shortcodes like :open_book: into unicode emojis)
+    renderer.text = function(text) {
+      return replaceEmojiShortcodes(text);
     };
 
     // Parse Markdown
