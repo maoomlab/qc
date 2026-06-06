@@ -105,6 +105,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  word-break: keep-all; /* Prevent line breaks inside Korean/English words */
+  overflow-wrap: break-word; /* Wrap long unbroken words if they threaten to overflow */
 }
 
 /* Scrollbar styling */
