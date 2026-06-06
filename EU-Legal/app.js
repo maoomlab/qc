@@ -1,57 +1,1060 @@
-const toggles = document.querySelectorAll('.section-toggle');
-const searchInput = document.getElementById('searchInput');
-const sections = document.querySelectorAll('.law-section');
-const tocLinks = document.querySelectorAll('.toc a');
+// ==========================================================================
+// QC Document Portal JavaScript Logic
+// ==========================================================================
 
-toggles.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const panel = btn.nextElementSibling;
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    panel.hidden = expanded;
+document.addEventListener('DOMContentLoaded', () => {
+  // Application State
+  const state = {
+    config: null,
+    currentView: 'landing',
+    activeDocId: null,
+    docsCache: {},
+    searchIndex: [],
+    theme: 'light'
+  };
+
+  // DOM Elements
+  const headerSearch = document.getElementById('header-search');
+  const clearSearchBtn = document.getElementById('clear-search-btn');
+  const searchResultsDropdown = document.getElementById('search-results-dropdown');
+  const landingSearch = document.getElementById('landing-search');
+  const landingSearchResults = document.getElementById('landing-search-results');
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const logoBtn = document.getElementById('logo-btn');
+  
+  // Header Navigation links
+  const navHome = document.getElementById('nav-home');
+  const navDocsBtn = document.getElementById('nav-docs-btn');
+  const docsDropdownMenu = document.getElementById('docs-dropdown-menu');
+  
+  const landingView = document.getElementById('landing-view');
+  const docView = document.getElementById('doc-view');
+  const landingCardsContainer = document.getElementById('landing-cards-container');
+  const sidebarNavContainer = document.getElementById('sidebar-nav-container');
+  const markdownContainer = document.getElementById('markdown-container');
+  const docMainTitle = document.getElementById('doc-main-title');
+  const docBreadcrumbs = document.getElementById('doc-breadcrumbs');
+  const readingTimeSpan = document.getElementById('reading-time');
+  const tocListContainer = document.getElementById('toc-list-container');
+  const printDocBtn = document.getElementById('print-doc-btn');
+  
+  // Mobile elements
+  const mobileSidebarToggle = document.getElementById('mobile-sidebar-toggle');
+  const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+  const sidebarLeft = document.getElementById('sidebar-left');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const mobileActiveDoc = document.querySelector('.mobile-active-doc');
+
+  // Initialize Theme
+  initTheme();
+  
+  // Category mapping dictionary
+  const categoryMap = {
+    'legal': '차량 개발 법규',
+    'guide': '기술문서 작성 가이드',
+    'docs': '기타 문서',
+    'EU-Legal': '차량 개발 법규',
+    'QC-Guide': '기술문서 작성 가이드',
+    'eu-legal': '차량 개발 법규',
+    'qc-guide': '기술문서 작성 가이드'
+  };
+
+  // Dynamically scan the root folder if directory listing is supported
+  async function scanDocsFolder() {
+    try {
+      // 1. Fetch the root folder URL
+      const response = await fetch('./');
+      if (!response.ok) throw new Error('Directory listing not available');
+      
+      const text = await response.text();
+      // Check if text looks like HTML directory list
+      if (!text.includes('<html') && !text.includes('<pre>') && !text.includes('<ul') && !text.includes('<a')) {
+        throw new Error('Server does not return HTML directory list');
+      }
+      
+      const parser = new DOMParser();
+      const docHtml = parser.parseFromString(text, 'text/html');
+      
+      // System folders to ignore
+      const ignoredFolders = ['images', 'brain', 'node_modules', '.git', '.github', '.gemini', 'docs'];
+      // System files to ignore
+      const ignoredFiles = ['index.html', 'styles.css', 'style.css', 'app.js', 'update-docs.js', 'watch-docs.js', 'docs.json', 'package.json', 'package-lock.json', 'readme.md', '.ds_store'];
+
+      // Extract clean links
+      const links = Array.from(docHtml.querySelectorAll('a'))
+        .map(a => {
+          let href = a.getAttribute('href') || '';
+          try {
+            href = decodeURIComponent(href);
+          } catch (e) {}
+          return href;
+        })
+        .filter(href => {
+          if (!href) return false;
+          // Ignore parent directory, external links, and queries
+          if (href.startsWith('?') || href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//')) {
+            return false;
+          }
+          const basename = href.split('/').filter(Boolean).pop();
+          if (basename === '.' || basename === '..') return false;
+          return true;
+        });
+      
+      const mdFiles = [];
+      const subdirs = [];
+      
+      links.forEach(link => {
+        // Normalize relative path representation
+        let cleanLink = link;
+        if (cleanLink.startsWith('./')) {
+          cleanLink = cleanLink.substring(2);
+        }
+        
+        // Remove trailing slash to check name
+        const nameWithoutSlash = cleanLink.endsWith('/') ? cleanLink.slice(0, -1) : cleanLink;
+        const lowerName = nameWithoutSlash.toLowerCase();
+        
+        if (ignoredFolders.includes(lowerName) || ignoredFiles.includes(lowerName)) {
+          return;
+        }
+        
+        if (cleanLink.endsWith('.md')) {
+          mdFiles.push({ path: cleanLink, category: '기타 문서' });
+        } else if (cleanLink.endsWith('/') && cleanLink !== '../' && cleanLink !== './') {
+          subdirs.push(cleanLink);
+        } else {
+          // If a directory link does not have a trailing slash, check if it doesn't have an extension
+          const parts = cleanLink.split('/');
+          const lastPart = parts[parts.length - 1];
+          if (lastPart && !lastPart.includes('.') && lastPart !== '..' && lastPart !== '.') {
+            subdirs.push(cleanLink + '/');
+          }
+        }
+      });
+      
+      // Search subdirectories (1-level deep)
+      for (const subdir of subdirs) {
+        try {
+          const subRes = await fetch(subdir);
+          if (!subRes.ok) continue;
+          const subText = await subRes.text();
+          const subDoc = parser.parseFromString(subText, 'text/html');
+          
+          const subLinks = Array.from(subDoc.querySelectorAll('a'))
+            .map(a => {
+              let href = a.getAttribute('href') || '';
+              try {
+                href = decodeURIComponent(href);
+              } catch (e) {}
+              return href;
+            })
+            .filter(href => href && href.endsWith('.md'));
+            
+          const rawCategory = decodeURIComponent(subdir.replace('/', ''));
+          subLinks.forEach(file => {
+            let cleanFile = file;
+            if (cleanFile.startsWith('./')) {
+              cleanFile = cleanFile.substring(2);
+            }
+            // Ensure we don't duplicate subdirectory path
+            const finalPath = cleanFile.startsWith(subdir) ? cleanFile : `${subdir}${cleanFile}`;
+            mdFiles.push({
+              path: finalPath,
+              category: rawCategory
+            });
+          });
+        } catch (e) {
+          console.warn('Subdirectory listing failed:', subdir, e);
+        }
+      }
+      
+      if (mdFiles.length === 0) throw new Error('No markdown documents found');
+      
+      const categoriesMap = {};
+      
+      // Process each file to extract titles and descriptions
+      for (const fileInfo of mdFiles) {
+        try {
+          const fileRes = await fetch(fileInfo.path);
+          if (!fileRes.ok) continue;
+          const fileContent = await fileRes.text();
+          
+          // Extract first heading
+          const titleMatch = fileContent.match(/^#\s+(.+)$/m);
+          const title = titleMatch ? titleMatch[1].trim() : fileInfo.path.split('/').pop().replace('.md', '');
+          
+          // Extract first long paragraph for description
+          const paragraphs = fileContent.split('\n')
+            .map(p => p.trim())
+            .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
+          
+          const description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
+          
+          // Determine Category Name
+          let finalCategory = fileInfo.category;
+          // Fallback category routing for original files at the root
+          const filename = fileInfo.path.split('/').pop();
+          if (filename === 'eu-legal.md' || filename === 'EU_Legal.md') {
+            finalCategory = '차량 개발 법규';
+          } else if (filename === 'qc-guide.md' || filename === 'QC_Guide.md') {
+            finalCategory = '기술문서 작성 가이드';
+          } else if (fileInfo.category === '기타 문서') {
+            // Auto-detect based on filename keywords for root-level added documents
+            const nameLower = fileInfo.path.toLowerCase();
+            if (nameLower.includes('legal') || nameLower.includes('법규') || nameLower.includes('rule') || nameLower.includes('eu')) {
+              finalCategory = '차량 개발 법규';
+            } else if (nameLower.includes('guide') || nameLower.includes('가이드') || nameLower.includes('write') || nameLower.includes('writing') || nameLower.includes('standard') || nameLower.includes('tw') || nameLower.includes('qc')) {
+              finalCategory = '기술문서 작성 가이드';
+            }
+          }
+          
+          const catName = categoryMap[finalCategory] || finalCategory;
+          
+          if (!categoriesMap[catName]) {
+            categoriesMap[catName] = [];
+          }
+          
+          // ID should be URL-friendly (slug format)
+          const fileId = fileInfo.path.replace(/\.md$/, '').replace(/\//g, '-');
+          
+          let icon = 'file-lines';
+          if (catName.includes('법규') || catName.toLowerCase().includes('legal')) {
+            icon = 'shield';
+          } else if (catName.includes('가이드') || catName.toLowerCase().includes('guide') || catName.toLowerCase().includes('writing')) {
+            icon = 'edit';
+          }
+          
+          categoriesMap[catName].push({
+            id: fileId,
+            title: title,
+            file: fileInfo.path,
+            description: description,
+            icon: icon
+          });
+        } catch (err) {
+          console.warn('Dynamic file fetch/parsing failed:', fileInfo.path, err);
+        }
+      }
+      
+      const categories = Object.keys(categoriesMap).map(name => ({
+        name: name,
+        items: categoriesMap[name]
+      }));
+      
+      // Keep alphabetical order for menus
+      categories.forEach(cat => {
+        cat.items.sort((a, b) => a.title.localeCompare(b.title));
+      });
+      
+      return { categories };
+      
+    } catch (error) {
+      console.log('Docs auto-scan fallback to docs.json. Reason:', error.message);
+      const res = await fetch('docs.json');
+      if (!res.ok) throw new Error('Static configuration fetch failed');
+      return await res.json();
+    }
+  }
+
+  // Fetch Config and Start Application
+  scanDocsFolder()
+    .then(configData => {
+      state.config = configData;
+      buildNavigation();
+      buildSearchIndex();
+      handleRouting();
+    })
+    .catch(error => {
+      console.error('Portal startup failed:', error);
+      markdownContainer.innerHTML = `<div class="no-results"><i class="fa-solid fa-circle-exclamation" style="font-size: 2rem; color: #ef4444;"></i><br><br>문서 설정을 초기화하는 데 실패했습니다.</div>`;
+    });
+
+  // Hash change routing
+  window.addEventListener('hashchange', handleRouting);
+
+  // Theme Toggler
+  themeToggleBtn.addEventListener('click', () => {
+    const newTheme = state.theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
   });
-});
 
-document.getElementById('expandAll').addEventListener('click', () => {
-  toggles.forEach((btn) => {
-    btn.setAttribute('aria-expanded', 'true');
-    btn.nextElementSibling.hidden = false;
+  // Nav actions
+  logoBtn.addEventListener('click', () => { window.location.hash = '#/'; });
+  printDocBtn.addEventListener('click', () => { window.print(); });
+
+  // Toggle Docs Dropdown
+  navDocsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    docsDropdownMenu.classList.toggle('open');
   });
-});
 
-document.getElementById('collapseAll').addEventListener('click', () => {
-  toggles.forEach((btn) => {
-    btn.setAttribute('aria-expanded', 'false');
-    btn.nextElementSibling.hidden = true;
-  });
-});
+  // Mobile sidebar triggers
+  if (mobileSidebarToggle) {
+    mobileSidebarToggle.addEventListener('click', () => {
+      sidebarLeft.classList.add('open');
+      sidebarOverlay.style.display = 'block';
+    });
+  }
+  
+  const closeSidebarMobile = () => {
+    sidebarLeft.classList.remove('open');
+    sidebarOverlay.style.display = 'none';
+  };
+  
+  if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebarMobile);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebarMobile);
 
-searchInput.addEventListener('input', (event) => {
-  const q = event.target.value.trim().toLowerCase();
+  // Setup Search functionality
+  setupSearch(headerSearch, searchResultsDropdown, clearSearchBtn);
+  setupSearch(landingSearch, landingSearchResults);
 
-  sections.forEach((section) => {
-    const text = section.textContent.toLowerCase();
-    const match = !q || text.includes(q);
-    section.style.display = match ? '' : 'none';
-
-    if (q && match) {
-      const btn = section.querySelector('.section-toggle');
-      const panel = section.querySelector('.section-panel');
-      btn.setAttribute('aria-expanded', 'true');
-      panel.hidden = false;
+  // Close search dropdowns and Docs menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper') && !e.target.closest('.landing-search-container')) {
+      searchResultsDropdown.style.display = 'none';
+      landingSearchResults.style.display = 'none';
+    }
+    if (!e.target.closest('.header-dropdown-container')) {
+      docsDropdownMenu.classList.remove('open');
     }
   });
+
+  // ==========================================================================
+  // Router
+  // ==========================================================================
+  function handleRouting() {
+    const hash = window.location.hash || '#/';
+    closeSidebarMobile();
+    
+    // Reset active header links
+    navHome.classList.remove('active');
+    navDocsBtn.classList.remove('active');
+    
+    if (hash === '#/' || hash === '') {
+      // Show Landing Page
+      state.currentView = 'landing';
+      state.activeDocId = null;
+      
+      landingView.classList.add('active');
+      docView.classList.remove('active');
+      navHome.classList.add('active');
+      document.title = "QC Document Portal";
+      window.scrollTo(0, 0);
+    } else if (hash.startsWith('#/docs/')) {
+      // Show Doc Viewer
+      state.currentView = 'doc';
+      const docId = hash.split('?')[0].replace('#/docs/', '');
+      state.activeDocId = docId;
+      
+      landingView.classList.remove('active');
+      docView.classList.add('active');
+      
+      // Highlight Docs dropdown link in header when reading any doc
+      navDocsBtn.classList.add('active');
+      
+      // Update sidebar nav highlighting
+      document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        if (btn.dataset.id === docId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      loadDocument(docId);
+    }
+  }
+
+  // ==========================================================================
+  // Theme Helper
+  // ==========================================================================
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (systemPrefersDark) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  }
+
+  function setTheme(theme) {
+    state.theme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    const icon = themeToggleBtn.querySelector('i');
+    if (theme === 'dark') {
+      icon.className = 'fa-solid fa-sun';
+      themeToggleBtn.style.color = '#fbbf24';
+    } else {
+      icon.className = 'fa-solid fa-moon';
+      themeToggleBtn.style.color = 'var(--text-secondary)';
+    }
+  }
+
+  // ==========================================================================
+  // Navigation Builder
+  // ==========================================================================
+  function buildNavigation() {
+    if (!state.config) return;
+    
+    // Clear containers
+    landingCardsContainer.innerHTML = '';
+    sidebarNavContainer.innerHTML = '';
+    docsDropdownMenu.innerHTML = '';
+    
+    state.config.categories.forEach(category => {
+      // 1. Sidebar Category
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'nav-group';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'nav-group-title';
+      titleDiv.textContent = category.name;
+      groupDiv.appendChild(titleDiv);
+      
+      const ul = document.createElement('ul');
+      ul.className = 'nav-group-list';
+      
+      // 2. Dropdown Category Group
+      const dropdownGroup = document.createElement('div');
+      dropdownGroup.className = 'dropdown-group';
+      dropdownGroup.innerHTML = `<div class="dropdown-group-title">${category.name}</div>`;
+      
+      const dropdownGroupList = document.createElement('div');
+      dropdownGroupList.className = 'dropdown-group-list';
+      
+      category.items.forEach(item => {
+        // Sidebar item button
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.className = 'nav-item-btn';
+        button.dataset.id = item.id;
+        
+        let iconClass = 'fa-file-lines';
+        if (item.icon === 'shield') iconClass = 'fa-shield-halved';
+        if (item.icon === 'edit') iconClass = 'fa-pen-to-square';
+        
+        button.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span>${item.title}</span>`;
+        button.addEventListener('click', () => {
+          window.location.hash = `#/docs/${item.id}`;
+        });
+        
+        li.appendChild(button);
+        ul.appendChild(li);
+        
+        // Landing Page Card
+        const card = document.createElement('div');
+        card.className = 'premium-card';
+        card.innerHTML = `
+          <div class="card-icon"><i class="fa-solid ${iconClass}"></i></div>
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          <div class="card-footer-link">문서 바로 읽기 <i class="fa-solid fa-arrow-right"></i></div>
+        `;
+        card.addEventListener('click', () => {
+          window.location.hash = `#/docs/${item.id}`;
+        });
+        landingCardsContainer.appendChild(card);
+
+        // Header Dropdown Menu item
+        const dropdownItem = document.createElement('a');
+        dropdownItem.className = 'dropdown-menu-item';
+        dropdownItem.href = `#/docs/${item.id}`;
+        dropdownItem.innerHTML = `
+          <i class="fa-solid ${iconClass} dropdown-item-icon"></i>
+          <div class="dropdown-item-content">
+            <div class="dropdown-item-title">${item.title}</div>
+            <div class="dropdown-item-desc">${item.description.substring(0, 50)}...</div>
+          </div>
+        `;
+        dropdownItem.addEventListener('click', () => {
+          docsDropdownMenu.classList.remove('open');
+        });
+        dropdownGroupList.appendChild(dropdownItem);
+      });
+      
+      groupDiv.appendChild(ul);
+      sidebarNavContainer.appendChild(groupDiv);
+      
+      dropdownGroup.appendChild(dropdownGroupList);
+      docsDropdownMenu.appendChild(dropdownGroup);
+    });
+  }
+
+  // ==========================================================================
+  // Document Loader & Custom Marked Renderers
+  // ==========================================================================
+  function loadDocument(docId) {
+    // Show skeleton loader or message
+    markdownContainer.innerHTML = `<div class="no-results"><i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem;"></i><br><br>문서를 불러오는 중입니다...</div>`;
+    
+    // Find item configuration
+    let activeItem = null;
+    state.config.categories.forEach(cat => {
+      const found = cat.items.find(i => i.id === docId);
+      if (found) activeItem = found;
+    });
+    
+    if (!activeItem) {
+      markdownContainer.innerHTML = `<div class="no-results"><i class="fa-solid fa-circle-xmark"></i><br>문서를 찾을 수 없습니다.</div>`;
+      return;
+    }
+    
+    // Update breadcrumbs and active document title
+    docMainTitle.textContent = activeItem.title;
+    mobileActiveDoc.textContent = activeItem.title;
+    docBreadcrumbs.innerHTML = `
+      <span onclick="window.location.hash='#/'">홈</span> &gt; 
+      <span>문서</span> &gt; 
+      <span class="active">${activeItem.title}</span>
+    `;
+
+    // Fetch markdown file contents
+    const filePath = activeItem.file;
+    
+    if (state.docsCache[docId]) {
+      renderMarkdown(state.docsCache[docId], docId);
+    } else {
+      fetch(filePath)
+        .then(response => {
+          if (!response.ok) throw new Error('File not found');
+          return response.text();
+        })
+        .then(markdownText => {
+          state.docsCache[docId] = markdownText;
+          renderMarkdown(markdownText, docId);
+        })
+        .catch(error => {
+          console.error('Error fetching document:', error);
+          markdownContainer.innerHTML = `<div class="no-results"><i class="fa-solid fa-circle-exclamation"></i><br><br>문서 파일(${filePath})을 읽는 데 실패했습니다.<br>파일이 올바른 경로에 존재하는지 확인해주세요.</div>`;
+        });
+    }
+  }
+
+  function renderMarkdown(markdownText, docId) {
+    // Set custom marked.js renderer rules
+    const renderer = new marked.Renderer();
+    
+    // Find item configuration to get its file path
+    let activeItem = null;
+    if (state.config) {
+      state.config.categories.forEach(cat => {
+        const found = cat.items.find(i => i.id === docId);
+        if (found) activeItem = found;
+      });
+    }
+
+    // Rule 1: Custom Image Renderer (handles missing images gracefully)
+    renderer.image = function(href, title, text) {
+      let resolvedHref = href;
+      if (href && activeItem && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('/') && !href.startsWith('data:')) {
+        // Extract the parent directory of the current file (e.g. "EU-Legal/EU_Legal.md" -> "EU-Legal")
+        const fileParts = activeItem.file.split('/');
+        fileParts.pop(); // remove filename
+        const dirPath = fileParts.join('/');
+        if (dirPath) {
+          let cleanHref = href;
+          if (cleanHref.startsWith('./')) {
+            cleanHref = cleanHref.substring(2);
+          }
+          resolvedHref = `${dirPath}/${cleanHref}`;
+        }
+      }
+
+      return `<img src="${resolvedHref}" alt="${text}" onerror="handleImageError(this, '${resolvedHref}', '${text || ''}')" class="markdown-image">`;
+    };
+
+    // Rule 2: Custom Blockquote Renderer (for warning and note alerts)
+    renderer.blockquote = function(quoteHtml) {
+      // Analyze text of the blockquote to assign beautiful styles
+      let alertClass = 'alert-note';
+      let icon = '<i class="fa-solid fa-circle-info" style="margin-right:8px; font-size:1.05rem;"></i>';
+      
+      const cleanText = quoteHtml.toLowerCase();
+      if (cleanText.includes('death') || cleanText.includes('serious injury') || cleanText.includes('사망') || cleanText.includes('부상') || cleanText.includes('경고') || cleanText.includes('위험') || cleanText.includes('금지')) {
+        alertClass = 'alert-warning';
+        icon = '<i class="fa-solid fa-circle-exclamation" style="margin-right:8px; font-size:1.05rem;"></i>';
+      } else if (cleanText.includes('실무자') || cleanText.includes('확인') || cleanText.includes('성능') || cleanText.includes('결론')) {
+        alertClass = 'alert-success';
+        icon = '<i class="fa-solid fa-circle-check" style="margin-right:8px; font-size:1.05rem;"></i>';
+      }
+      
+      // Inject icon inside the first paragraph if possible, or wrap it
+      let formattedQuote = quoteHtml.trim();
+      if (formattedQuote.startsWith('<p>')) {
+        formattedQuote = formattedQuote.replace('<p>', `<p>${icon} `);
+      } else {
+        formattedQuote = `<p>${icon}</p>${formattedQuote}`;
+      }
+      
+      return `<blockquote class="${alertClass}">${formattedQuote}</blockquote>`;
+    };
+
+    // Rule 3: Custom List Item Renderer (for checklist checkbox styling)
+    renderer.listitem = function(text, task, checked) {
+      if (task) {
+        const checkedClass = checked ? 'checked' : 'unchecked';
+        const checkedIcon = checked ? '<i class="fa-solid fa-check"></i>' : '';
+        const itemClass = checked ? 'completed-task' : 'pending-task';
+        
+        // Strips out the default input checkbox that marked.js adds
+        const cleanText = text.replace(/<input[^>]*checkbox[^>]*>/, '').trim();
+        
+        return `
+          <li class="task-list-item ${itemClass}">
+            <span class="custom-checkbox ${checkedClass}">${checkedIcon}</span>
+            <span class="task-list-text">${cleanText}</span>
+          </li>
+        `;
+      }
+      return `<li>${text}</li>`;
+    };
+
+    // Parse Markdown
+    marked.setOptions({
+      renderer: renderer,
+      gfm: true,
+      breaks: true,
+      headerIds: true
+    });
+    
+    let rawHtml = marked.parse(markdownText);
+    
+    // Sanitize generated HTML to prevent vulnerabilities
+    let cleanHtml = DOMPurify.sanitize(rawHtml, {
+      ADD_TAGS: ['iframe', 'embed'], // Add any custom tags if needed
+      ADD_ATTR: ['onerror', 'onload'] // Allow onerror for handles
+    });
+    
+    markdownContainer.innerHTML = cleanHtml;
+    
+    // Process code blocks for syntax highlighting and copy buttons
+    processCodeBlocks();
+    
+    // Calculate Reading Time
+    calculateReadingTime(markdownText);
+    
+    // Generate Table of Contents
+    generateTOC();
+    
+    // Force browser scroll to top or specific header anchor if search directed
+    const hash = window.location.hash;
+    const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
+    const anchor = urlParams.get('section');
+    if (anchor) {
+      setTimeout(() => {
+        const el = document.getElementById(anchor);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  // Code blocks post-processing: Adding language headers and copy buttons
+  function processCodeBlocks() {
+    const codeBlocks = markdownContainer.querySelectorAll('pre');
+    codeBlocks.forEach(pre => {
+      const codeEl = pre.querySelector('code');
+      if (!codeEl) return;
+      
+      // Determine language name
+      let language = 'CODE';
+      const classes = codeEl.className.split(' ');
+      const langClass = classes.find(c => c.startsWith('language-'));
+      if (langClass) {
+        language = langClass.replace('language-', '').toUpperCase();
+      }
+      
+      // Create Header wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-header-container';
+      wrapper.innerHTML = `
+        <span>${language}</span>
+        <button class="copy-code-btn"><i class="fa-regular fa-copy"></i> 복사</button>
+      `;
+      
+      // Insert header before pre block
+      pre.parentNode.insertBefore(wrapper, pre);
+      
+      // Setup copy click action
+      const copyBtn = wrapper.querySelector('.copy-code-btn');
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent)
+          .then(() => {
+            copyBtn.innerHTML = `<i class="fa-solid fa-check" style="color: #4ade80;"></i> 완료`;
+            setTimeout(() => {
+              copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> 복사`;
+            }, 2000);
+          })
+          .catch(err => {
+            console.error('Failed to copy code text:', err);
+          });
+      });
+    });
+    
+    // Trigger Prism highlight
+    if (typeof Prism !== 'undefined') {
+      Prism.highlightAllUnder(markdownContainer);
+    }
+  }
+
+  function calculateReadingTime(text) {
+    const KoreanWpm = 250; // Korean words per minute
+    const words = text.trim().split(/\s+/).length;
+    const minutes = Math.max(1, Math.ceil(words / KoreanWpm));
+    readingTimeSpan.textContent = minutes;
+  }
+
+  // ==========================================================================
+  // Table of Contents (TOC) & Scroll Spy
+  // ==========================================================================
+  function generateTOC() {
+    tocListContainer.innerHTML = '';
+    
+    // Query headings in document container
+    const headings = markdownContainer.querySelectorAll('h1, h2, h3');
+    
+    if (headings.length === 0) {
+      tocListContainer.innerHTML = `<li style="padding: 10px 12px; font-size: 0.8rem; color: var(--text-muted);">섹션이 없습니다.</li>`;
+      return;
+    }
+    
+    headings.forEach((heading, idx) => {
+      // Ensure heading has an ID
+      if (!heading.id) {
+        // Generate slug from text
+        heading.id = 'heading-' + idx + '-' + heading.textContent.toLowerCase()
+          .replace(/[^\wㄱ-힣\s-]/g, '') // Keep words, space, Korean characters
+          .trim()
+          .replace(/\s+/g, '-');
+      }
+      
+      const li = document.createElement('li');
+      li.className = 'toc-item';
+      
+      const a = document.createElement('a');
+      a.className = `toc-link toc-depth-${heading.tagName.substring(1)}`;
+      a.textContent = heading.textContent;
+      a.href = `${window.location.hash.split('?')[0]}?section=${heading.id}`;
+      
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Add parameter to URL hash silently without trigger re-load
+        const cleanHash = window.location.hash.split('?')[0];
+        history.pushState(null, null, `${cleanHash}?section=${heading.id}`);
+        
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Highlight active link
+        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+        a.classList.add('active');
+      });
+      
+      li.appendChild(a);
+      tocListContainer.appendChild(li);
+    });
+
+    // Initialize Scroll Spy functionality
+    setupScrollSpy(headings);
+  }
+
+  function setupScrollSpy(headings) {
+    const docLayout = document.querySelector('.doc-body');
+    const scrollContainer = window; // Since document scrolls globally on this layout
+
+    const scrollSpyHandler = () => {
+      let currentActiveId = null;
+      const triggerOffset = 150; // Scroll offset
+      
+      headings.forEach(heading => {
+        const top = heading.getBoundingClientRect().top;
+        if (top < triggerOffset) {
+          currentActiveId = heading.id;
+        }
+      });
+      
+      if (currentActiveId) {
+        document.querySelectorAll('.toc-link').forEach(link => {
+          const hrefSection = link.href.substring(link.href.indexOf('?section=') + 9);
+          if (hrefSection === currentActiveId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    };
+
+    window.removeEventListener('scroll', scrollSpyHandler);
+    window.addEventListener('scroll', scrollSpyHandler);
+    // Trigger once
+    scrollSpyHandler();
+  }
+
+  // ==========================================================================
+  // Client-Side Search Engine (Index & Dynamic Query UI)
+  // ==========================================================================
+  function buildSearchIndex() {
+    if (!state.config) return;
+    
+    // Index Categories and Documents description
+    state.config.categories.forEach(category => {
+      category.items.forEach(item => {
+        // Fetch each document to index its details dynamically
+        fetch(item.file)
+          .then(res => res.text())
+          .then(mdText => {
+            // Index raw headers and paragraphs
+            const lines = mdText.split('\n');
+            let currentHeading = item.title;
+            let currentHeadingId = '';
+            
+            lines.forEach((line, idx) => {
+              const trimmed = line.trim();
+              if (trimmed.startsWith('#')) {
+                // Keep heading text
+                currentHeading = trimmed.replace(/^#+\s+/, '');
+                currentHeadingId = 'heading-' + idx + '-' + currentHeading.toLowerCase()
+                  .replace(/[^\wㄱ-힣\s-]/g, '')
+                  .trim()
+                  .replace(/\s+/g, '-');
+                  
+                state.searchIndex.push({
+                  docId: item.id,
+                  docTitle: item.title,
+                  type: 'heading',
+                  title: currentHeading,
+                  headingId: currentHeadingId,
+                  content: currentHeading
+                });
+              } else if (trimmed.length > 20 && !trimmed.startsWith('!') && !trimmed.startsWith('|') && !trimmed.startsWith('---')) {
+                // Index text content
+                state.searchIndex.push({
+                  docId: item.id,
+                  docTitle: item.title,
+                  type: 'paragraph',
+                  title: currentHeading,
+                  headingId: currentHeadingId,
+                  content: trimmed.replace(/[*_`\[\]()#\-+]/g, '') // clean formatting markup
+                });
+              }
+            });
+          })
+          .catch(e => console.error('Failed to index file:', item.file));
+      });
+    });
+  }
+
+  function setupSearch(inputEl, dropdownEl, clearBtnEl) {
+    inputEl.addEventListener('input', () => {
+      const query = inputEl.value.trim().toLowerCase();
+      
+      if (clearBtnEl) {
+        clearBtnEl.style.display = query.length > 0 ? 'block' : 'none';
+      }
+      
+      if (query.length < 2) {
+        dropdownEl.innerHTML = '';
+        dropdownEl.style.display = 'none';
+        return;
+      }
+      
+      // Perform local search match
+      const matches = state.searchIndex.filter(indexItem => {
+        return indexItem.content.toLowerCase().includes(query) || 
+               indexItem.docTitle.toLowerCase().includes(query) || 
+               indexItem.title.toLowerCase().includes(query);
+      });
+      
+      // Limit search results to 10
+      const limitedMatches = matches.slice(0, 10);
+      
+      renderSearchResults(limitedMatches, query, dropdownEl, inputEl);
+    });
+
+    if (clearBtnEl) {
+      clearBtnEl.addEventListener('click', () => {
+        inputEl.value = '';
+        clearBtnEl.style.display = 'none';
+        dropdownEl.innerHTML = '';
+        dropdownEl.style.display = 'none';
+      });
+    }
+
+    inputEl.addEventListener('focus', () => {
+      if (inputEl.value.trim().length >= 2 && dropdownEl.children.length > 0) {
+        dropdownEl.style.display = 'block';
+      }
+    });
+  }
+
+  function renderSearchResults(results, query, dropdownEl, inputEl) {
+    dropdownEl.innerHTML = '';
+    
+    if (results.length === 0) {
+      dropdownEl.innerHTML = `<div class="no-results">"${query}"에 대한 검색 결과가 없습니다.</div>`;
+      dropdownEl.style.display = 'block';
+      return;
+    }
+    
+    results.forEach(result => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'search-result-item';
+      
+      // Highlight query inside content snippet
+      const highlightText = (text, queryTerm) => {
+        const index = text.toLowerCase().indexOf(queryTerm);
+        if (index === -1) return text;
+        
+        const start = Math.max(0, index - 40);
+        const end = Math.min(text.length, index + queryTerm.length + 60);
+        let snippet = text.substring(start, end);
+        
+        if (start > 0) snippet = '...' + snippet;
+        if (end < text.length) snippet = snippet + '...';
+        
+        // Escape HTML
+        const safeSnippet = snippet.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        
+        // Match regex for highlighting case insensitively
+        const regex = new RegExp(`(${queryTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+        return safeSnippet.replace(regex, '<mark>$1</mark>');
+      };
+
+      const displaySnippet = highlightText(result.content, query);
+      
+      itemDiv.innerHTML = `
+        <div class="search-result-title">
+          <span>${result.title}</span>
+          <span class="search-result-category">${result.docTitle}</span>
+        </div>
+        <div class="search-result-snippet">${displaySnippet}</div>
+      `;
+      
+      itemDiv.addEventListener('click', () => {
+        // Go to doc
+        window.location.hash = `#/docs/${result.docId}?section=${result.headingId}`;
+        dropdownEl.style.display = 'none';
+        inputEl.value = '';
+        if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+      });
+      
+      dropdownEl.appendChild(itemDiv);
+    });
+    
+    dropdownEl.style.display = 'block';
+  }
 });
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    tocLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`));
-  });
-}, {rootMargin: '-30% 0px -65% 0px'});
+// ==========================================================================
+// Image Error / Fallback Card Handler (global namespace for onclick/onerror)
+// ==========================================================================
+function handleImageError(imgEl, originalSrc, altText) {
+  // Prevent infinite loops if fallback logo fails
+  imgEl.onerror = null;
+  
+  // Custom fallbacks metadata
+  // We can customize the details based on alt text or source filepath to make it premium
+  let title = "QC 규격 시각자료";
+  let description = "이해를 돕기 위한 차량 설명 및 부품 규정 예시 이미지입니다.";
+  let iconClass = "fa-solid fa-car-tunnel";
+  
+  const altLower = altText.toLowerCase();
+  const srcLower = originalSrc.toLowerCase();
+  
+  if (altLower.includes('airbag') || srcLower.includes('image-2') || srcLower.includes('image.')) {
+    title = "CRS 장착 및 에어백 안전 경고 라벨";
+    description = "조수석 에어백 경고 라벨 시인성 확보 및 후향식 카시트 설치 금지 경고 라벨 예시.";
+    iconClass = "fa-solid fa-child-reaching";
+  } else if (altLower.includes('sbr') || srcLower.includes('image-3') || srcLower.includes('image-4')) {
+    title = "SBR (Seat Belt Reminder) 작동 예시";
+    description = "안전벨트 미착용에 대한 지속적인 경고등 점등 시인성 확보 및 타향지 연동 로직 표시.";
+    iconClass = "fa-solid fa-circle-exclamation";
+  } else if (srcLower.includes('image-6') || srcLower.includes('image-7')) {
+    title = "폴딩 시트 및 벨트 간섭 설명";
+    description = "가변형 시트 조작 과정에서의 안전벨트 손상 방지 및 점검 유도 오너스 매뉴얼 문구 예시.";
+    iconClass = "fa-solid fa-chair";
+  } else if (srcLower.includes('image-12') || srcLower.includes('image-13')) {
+    title = "i-Size 및 ISOFIX CRS 호환성 테이블";
+    description = "유아용 카시트 인증 방식(ISOFIX / Non-ISOFIX)에 따른 좌석 호환성 데이터 매뉴얼 정리 예시.";
+    iconClass = "fa-solid fa-table-list";
+  } else if (srcLower.includes('image-15') || srcLower.includes('image-16')) {
+    title = "EDR (Event Data Recorder) 수집 데이터 고지";
+    description = "차량 주행 정보 데이터 보존성, 개인 정보 및 데이터 처리에 대한 사용자 고지 사항 예시.";
+    iconClass = "fa-solid fa-database";
+  } else if (srcLower.includes('image-21') || srcLower.includes('image-22')) {
+    title = "브레이크 디스크/패드 마모 경고 지표";
+    description = "마찰재 마모 인디케이터 점등 시 경고등 안내 및 Scheduled Maintenance 정보 연동 예시.";
+    iconClass = "fa-solid fa-circle-notch";
+  } else if (srcLower.includes('image-23') || srcLower.includes('image-24')) {
+    title = "배출가스 저감 장치 점검 주기 및 GPF 안내";
+    description = "내연기관 배기 정화용 후처리 장치(GPF, DPF 등) 파워트레인별 점검/유지보수 연계 항목 예시.";
+    iconClass = "fa-solid fa-leaf";
+  } else if (srcLower.includes('image-25') || srcLower.includes('image-26') || srcLower.includes('image-27') || srcLower.includes('image-28')) {
+    title = "eCall System SOS 버튼 및 호출 프로세스";
+    description = "EU Pan-European, UAE, Russia GLONASS 등 향지별 SOS 작동 조건과 안테나/배터리 점검 주기 고지 예시.";
+    iconClass = "fa-solid fa-phone-volume";
+  } else if (srcLower.includes('image-30') || srcLower.includes('image-31') || srcLower.includes('image-32')) {
+    title = "EURO 7 비배기 환경 규제 대상 범위";
+    description = "엔진 배출가스 외 브레이크 패드 분진, 타이어 마모, 냉매 전 생애 주기 환경 지표 고지 예시.";
+    iconClass = "fa-solid fa-cloud-sun";
+  } else if (srcLower.includes('image-33') || srcLower.includes('image-34') || srcLower.includes('image-35')) {
+    title = "무선 적합성 선언문 (CE/UKCA DoC) 양식";
+    description = "ADAS, 스마트키, 블루투스 등 무선 기기 모듈 법적 인증 라벨의 매뉴얼 수록 양식 예시.";
+    iconClass = "fa-solid fa-square-rss";
+  } else if (srcLower.includes('image-36')) {
+    title = "외장 램프 전구 교체 서비스센터 권유";
+    description = "LED 및 전구 교체 가능 범위 설명과 공인 정비소(Professional Workshop) 방문 안내 문구 예시.";
+    iconClass = "fa-solid fa-lightbulb";
+  } else if (srcLower.includes('image-37') || srcLower.includes('image-39')) {
+    title = "디지털 키 보안 및 스마트폰 연동 해제";
+    description = "복제 방지 암호화 작동 방식과 전자 보안 잠금 상태 유지 매뉴얼 작동법 예시.";
+    iconClass = "fa-solid fa-mobile-screen-button";
+  } else if (srcLower.includes('image-40') || srcLower.includes('image-42') || srcLower.includes('image-45')) {
+    title = "파워 윈도우/선루프 핀치 방지 경고 및 조작";
+    description = "신체 끼임 방지 주의사항 및 단시간 하차 시 스마트키 회수 강조, 오사용 방지 경고 예시.";
+    iconClass = "fa-solid fa-window-maximize";
+  } else if (srcLower.includes('image-46') || srcLower.includes('image-47')) {
+    title = "친환경 에어컨 냉매 라벨 규정";
+    description = "지구온난화 지수(GWP) 관련 F-가스 제원 표시 및 A/C 냉매 시스템 주의 라벨 예시.";
+    iconClass = "fa-solid fa-temperature-arrow-down";
+  } else if (srcLower.includes('image-48') || srcLower.includes('image-49')) {
+    title = "전기차 AC/DC 충전기 커넥터 식별 라벨";
+    description = "유럽 연합 2014/94/EU 표준 규격에 맞춘 충전구 및 커넥터 호환성 식별 심볼 매뉴얼 고지 예시.";
+    iconClass = "fa-solid fa-bolt-lightning";
+  } else if (srcLower.includes('image-50') || srcLower.includes('image-51')) {
+    title = "오토 플러시 도어 핸들 비상 도어 개폐";
+    description = "비상 탈출 rescue 대응 및 핸들 판넬 삽입 형태의 손잡이 수동 조작 및 비상 해제 프로세스 예시.";
+    iconClass = "fa-solid fa-door-open";
+  } else if (srcLower.includes('image-52') || srcLower.includes('image-53')) {
+    title = "보행자 보호용 가상 엔진 사운드 시스템 (VESS)";
+    description = "조용한 친환경 차량 접근 인지를 위한 가상음 출력 유지 의무 및 임의 비활성화 금지 법규 예시.";
+    iconClass = "fa-solid fa-volume-high";
+  } else if (srcLower.includes('image-54')) {
+    title = "오토 헤드라이트 자동 점등 로직 설명";
+    description = "낮 주간주행등(DRL)에서 하향등(Low Beam)으로의 센서 기반 자동 전환 및 조작 제한 규칙 예시.";
+    iconClass = "fa-solid fa-eye-slash";
+  }
 
-sections.forEach((section) => observer.observe(section));
-
-document.getElementById('topButton').addEventListener('click', () => {
-  window.scrollTo({top:0, behavior:'smooth'});
-});
+  // Create a premium SVG/HTML placeholder box in place of the image
+  const fallbackDiv = document.createElement('div');
+  fallbackDiv.className = 'image-fallback-card';
+  fallbackDiv.innerHTML = `
+    <div class="image-fallback-icon"><i class="${iconClass}"></i></div>
+    <h5>${title}</h5>
+    <p>${description}</p>
+    <div class="image-path-badge"><i class="fa-regular fa-file-image"></i> ${originalSrc}</div>
+  `;
+  
+  // Replace the image element with this beautiful custom box
+  imgEl.parentNode.replaceChild(fallbackDiv, imgEl);
+}
