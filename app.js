@@ -540,11 +540,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set custom marked.js renderer rules
     const renderer = new marked.Renderer();
     
+    // Find item configuration to get its file path
+    let activeItem = null;
+    if (state.config) {
+      state.config.categories.forEach(cat => {
+        const found = cat.items.find(i => i.id === docId);
+        if (found) activeItem = found;
+      });
+    }
+
     // Rule 1: Custom Image Renderer (handles missing images gracefully)
     renderer.image = function(href, title, text) {
-      // Return normal img tag with an onerror script trigger
-      // Note: we escape characters and pass them to helper handleImageError
-      return `<img src="${href}" alt="${text}" onerror="handleImageError(this, '${href}', '${text || ''}')" class="markdown-image">`;
+      let resolvedHref = href;
+      if (href && activeItem && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('/') && !href.startsWith('data:')) {
+        // Extract the parent directory of the current file (e.g. "EU-Legal/EU_Legal.md" -> "EU-Legal")
+        const fileParts = activeItem.file.split('/');
+        fileParts.pop(); // remove filename
+        const dirPath = fileParts.join('/');
+        if (dirPath) {
+          let cleanHref = href;
+          if (cleanHref.startsWith('./')) {
+            cleanHref = cleanHref.substring(2);
+          }
+          resolvedHref = `${dirPath}/${cleanHref}`;
+        }
+      }
+
+      return `<img src="${resolvedHref}" alt="${text}" onerror="handleImageError(this, '${resolvedHref}', '${text || ''}')" class="markdown-image">`;
     };
 
     // Rule 2: Custom Blockquote Renderer (for warning and note alerts)
