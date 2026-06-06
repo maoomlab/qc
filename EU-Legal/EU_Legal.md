@@ -8,9 +8,6 @@
     3. 단순한 문장이 실제 안전 리스크가 되는 경우
     4. 실무자의 입장에서 생각해보기
 
-<br>
-<br>
-<br>
 
 # 시작 전에 이야기 하기
 
@@ -28,9 +25,6 @@
 > - [X] 안전 커뮤니케이션 관점으로도 접근 필요!
 > - [X] 테크니컬 라이터의 관점에서도, 법규 내용을 참고하여 초안 내용을 이해하며 작성하는 것이 필요!
 
-<br>
-<br>
-<br>
 
 # PAB 후향 CRS 금지
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-94*</span>
@@ -48,7 +42,6 @@
 ![alt text](images/image.png)
 
 <br>
-<br>
 
 ## :dart: 실무자 이해 포인트
 - [X] 유럽(EU)는 기능보다 사용자의 오사용 방지에 대해 더 강한 중점을 두고 있음
@@ -65,8 +58,6 @@
 ![alt text](images/image-2.png)
 
 <br>
-<br>
-<br>
 
 # SBR (Seat Belt Reminder)
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 ECE R-16.07*</span>
@@ -79,11 +70,11 @@
   - 단순 경고를 넘어 운전자의 행동 교정을 유도하며, 탑승자 생존율 및 EuroNCAP 평가와 직결됨
 - [X] 설계 핵심
   - <span style="color:#DC2626">**사용자가 경고를 충분히 그리고 즉각적으로 인지할수 있는지가 가장 중요한 판단 기준**</span>
+
 <br>
 
 ![alt text](images/image-3.png)
 
-<br>
 <br>
 
 ## :dart: 실무자 이해 포인트
@@ -98,8 +89,6 @@
 
 ![alt text](images/image-4.png)
 
-<br>
-<br>
 <br>
 
 # 폴딩 시트 사용 주의 문구
@@ -118,7 +107,6 @@
 ![alt text](images/image-6.png)
 
 <br>
-<br>
 
 ## :dart: 실무자 이해 포인트
 - [X] 앞좌석/뒷자석의 접기(folding) 가능한지 사양 체크
@@ -132,8 +120,6 @@
 ![alt text](images/image-7.png)
 
 <br>
-<br>
-<br>
 
 # CRS 테이블 정보 제공
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 77/541/EEC ECE R-16*</span>
@@ -143,11 +129,6 @@
   - 유아용 카시트는 단순히 장착 여부만이 아니라, 검증된 안전성과 적합성이 더 중요
 - [X] 사용자 인식과의 괴리
   - 일반 사용자는 차량 내 공간적 여유만 있으면 장착이 가능하다고 판단하기 쉬우나, <span style="color:#DC2626">하지만 실제로는 CRS 테이블에 기재된 조건에 따라 보호 성능 자체가 달라짐</span>
-
-<br>
-<br>
-<br>
-
 
 ## :dart: 실무자 이해 포인트
 - [X] CRS 안전성은 좌석 위치 + 설치 방향 + 차량 상태 (Airbag ON/OFF, 후향 CRS 금지 등) 조합으로 결정될 수 있음
@@ -167,7 +148,6 @@
 
 ![alt text](images/image-12.png)
 
-<br>
 <br>
 
 - [X] 복잡한 테이블이지만 오너스 매뉴얼에 구성하여, 사용자가 추측하여 설치하거나 혼란스럽지 않도록 정보 제공이 필요
