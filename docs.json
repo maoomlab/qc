@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "차량 개발 법규",
+      "items": [
+        {
+          "id": "EU-Legal-EU_Legal",
+          "title": "내부 법규 교육(유럽일반/표준안)",
+          "file": "EU-Legal/EU_Legal.md",
+          "description": "1. **교육 항목의 핵심**...",
+          "icon": "shield"
+        }
+      ]
+    },
+    {
+      "name": "기술문서 작성 가이드",
+      "items": [
+        {
+          "id": "QC-Guide-QC_Guide",
+          "title": "1. 조건문",
+          "file": "QC-Guide/QC_Guide.md",
+          "description": "조건을 나열할 때는 **When, If를 반복하기보다**, 상태·행위 자체를 간결하게 명시하는 것이 더 직관적이고 일관적이며, 가독성과 정확성이 향상됨...",
+          "icon": "edit"
+        }
+      ]
+    }
+  ]
+}
