@@ -468,7 +468,7 @@
 # 전기차 충전라벨 정보
 
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2014/94/EU*</span>
-- Specifications 챕터 중, **How to check the symbol on the charging labe(for Europe)**로 적용
+- Specifications 챕터 중, **How to check the symbol on the charging label(for Europe)**로 적용
   
 ## :open_book: 유럽에서는 고객이 처음 보는 충전기를 사용할 때, 어떻게 해야할까?
 - [X] 국경 없는 충전 환경
