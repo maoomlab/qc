@@ -234,7 +234,7 @@
 ## 오너스 매뉴얼 적용 <span style="font-size:65%"> :writing_hand:*법규 조항 2017/758 The Eurasian Economic Union (EAEU) and the UN-R 144 for approval within the UN*</span>
 - What to do in an emergency 챕터 중, 향지별 **eCall system** 내용으로 구성
   
-## :open_book: 왜 국가마다 서로 다른 eCall 시스템을 운영할까? <br> :open_book: 왜 유럽 법규는 eCall 배터리 점검주기까지 관리할까?
+## :open_book: 왜 국가마다 서로 다른 eCall 시스템을 운영할까? 왜 유럽 법규는 eCall 배터리 점검주기까지 관리할까?
 
 - [X] 인명 구조의 골든타임 확보
   - 국가별 시스템의 차이에도 불구하고, 사고 발생 직후 초동 조치를 위한 골든타임 확보를 최우선 가치로 설명함
