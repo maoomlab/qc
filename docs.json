@@ -1,11 +1,11 @@
 {
   "categories": [
     {
-      "name": "차량 개발 법규",
+      "name": "오너스매뉴얼 적용 법규",
       "items": [
         {
           "id": "EU-Legal-EU_Legal",
-          "title": "내부 법규 교육(유럽일반/표준안)",
+          "title": "유럽일반/표준안 내부 법규 교육",
           "file": "EU-Legal/EU_Legal.md",
           "description": "1. **교육 항목의 핵심**...",
           "icon": "shield"
@@ -17,7 +17,7 @@
       "items": [
         {
           "id": "QC-Guide-QC_Guide",
-          "title": "1. 조건문",
+          "title": "QC 표현법 가이드",
           "file": "QC-Guide/QC_Guide.md",
           "description": "조건을 나열할 때는 **When, If를 반복하기보다**, 상태·행위 자체를 간결하게 명시하는 것이 더 직관적이고 일관적이며, 가독성과 정확성이 향상됨...",
           "icon": "edit"
