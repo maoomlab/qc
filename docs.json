@@ -30,7 +30,7 @@
         {
           "id": "Korean-OM-Guide",
           "title": "오너스 매뉴얼 국문 스타일 가이드",
-          "file": "Korean-OM-Guide-test.md",
+          "file": "Korean-OM-Guide/Korean-OM-Guide-test.md",
           "description": "이 스타일 가이드는 기아자동차 국문 오너스 매뉴얼의 작성자와 검토자에게 오너스 매뉴얼(이하 ‘매뉴얼’이라 한다)을 일관되게 작성하고 검토하는...",
           "icon": "book"
         }
