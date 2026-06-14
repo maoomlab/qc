@@ -1471,11 +1471,15 @@ body {
 }
 
 /* Badges / Text Color Tags from raw HTML */
+.markdown-body span {
+  font-size: inherit; /* Ensure spans inherit font-size from their parent container */
+}
+
 .markdown-body span[style*="color"] {
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 600;
-  font-size: 0.9em;
+  font-size: inherit; /* Inherit the surrounding text size */
 }
 
 /* Missing Image Fallback Card */
