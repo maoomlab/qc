@@ -1345,7 +1345,9 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: var(--shadow-md);
   padding: 16px 20px !important;
-  overflow-x: auto;
+  white-space: pre-wrap; /* Wrap long lines */
+  word-break: break-all; /* Break on any character */
+  overflow-x: hidden; /* Prevent horizontal scrollbars */
   position: relative;
 }
 
