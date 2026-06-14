@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <!-- GitHub Pages Trailing Slash Redirect -->
+  <script>
+    if (window.location.hostname.endsWith('github.io') && 
+        !window.location.pathname.endsWith('/') && 
+        !window.location.pathname.split('/').pop().includes('.')) {
+      window.location.pathname = window.location.pathname + '/';
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QC Document Portal</title>
+  
+  <!-- Font Setup: Pretendard and Inter for beautiful Korean/English typography -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for modern, crisp layout elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Prism.js for syntax highlighting (Tomorrow theme is used for dark code container formatting) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Custom Stylesheet (Toss / Google style blend) -->
+  <link rel="stylesheet" href="styles.css?v=1.1.2">
+</head>
+<body>
+
+  <!-- Premium Header (Glassmorphic, Sticky) -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="logo-area" id="logo-btn">
+        <div class="logo-icon">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+        </div>
+        <span class="logo-text">QC <span class="highlight">Portal</span></span>
+      </div>
+      
+      <!-- Header Navigation Links -->
+      <nav class="header-nav">
+        <a href="#/" id="nav-home" class="header-nav-link active">Home</a>
+        
+        <!-- Docs Dropdown -->
+        <div class="header-dropdown-container">
+          <button id="nav-docs-btn" class="header-nav-link dropdown-trigger">
+            Docs <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+          </button>
+          <div id="docs-dropdown-menu" class="header-dropdown-menu">
+            <!-- Dynamically populated from JS -->
+          </div>
+        </div>
+      </nav>
+      
+      <!-- Search Bar in Header -->
+      <div class="search-wrapper">
+        <div class="search-input-container">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="header-search" placeholder="문서 제목, 법규 조항, 작성 룰 검색..." autocomplete="off">
+          <button id="clear-search-btn" class="clear-btn" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <!-- Search Results Dropdown -->
+        <div id="search-results-dropdown" class="search-dropdown" style="display:none;"></div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="다크 모드 토글">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Header Bar -->
+  <div class="mobile-nav-bar">
+    <button id="mobile-sidebar-toggle" class="mobile-menu-btn">
+      <i class="fa-solid fa-bars-staggered"></i> 카테고리
+    </button>
+    <div class="mobile-active-doc">QC 가이드 문서 보기</div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- 1. LANDING PAGE VIEW -->
+    <section id="landing-view" class="view-section active">
+      <div class="hero-section">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+          <div class="badge">QUALITY CONTROL DOCUMENT PORTAL</div>
+          <h1>품질 규격 및 기술문서 포털</h1>
+          <p class="hero-desc">유럽 개발 법규 검증 가이드라인과 테크니컬 라이팅(Technical Writing) 표준 문서를 통합 관리하는 사내 포털입니다. 최신 정보 수집 및 작성 기준 일관성을 유지할 수 있습니다.</p>
+          
+          <!-- Landing Page Centered Search -->
+          <div class="landing-search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="landing-search" placeholder="어떤 규정이나 가이드라인을 찾으시나요?" autocomplete="off">
+            <div id="landing-search-results" class="search-dropdown" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="landing-container">
+        <!-- Quick Cards Section -->
+        <h2 class="section-title">핵심 문서 카테고리</h2>
+        <div class="cards-grid" id="landing-cards-container">
+          <!-- Dynamically populated from docs.json -->
+        </div>
+
+        <!-- Dashboard Widgets -->
+        <div class="dashboard-row">
+          <!-- Recent updates widget -->
+          <div class="dashboard-card">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> 최근 업데이트 및 알림</h3>
+            <ul class="update-list">
+              <li>
+                <span class="update-date">2026.06.06</span>
+                <span class="update-tag new">NEW</span>
+                <div class="update-body">
+                  <strong>유럽 법규 교육 문서 배포</strong>: eCall 배터리 점검 주기 법규 UN-R 144 및 EURO7 개정 사항 반영.
+                </div>
+              </li>
+              <li>
+                <span class="update-date">2026.06.05</span>
+                <span class="update-tag text">가이드</span>
+                <div class="update-body">
+                  <strong>Technical Writing 표준 규칙 수립</strong>: 조건문 반복 줄이기 및 인터페이스 동작 동사(Press/Tap/Turn) 사용법 추가.
+                </div>
+              </li>
+              <li>
+                <span class="update-date">2026.05.20</span>
+                <span class="update-tag system">시스템</span>
+                <div class="update-body">
+                  <strong>문서 추가 프로세스 개선</strong>: 마크다운 파일 등록과 `docs.json` 설정으로 정적 사이트 내 실시간 색인 및 검색이 지원됩니다.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- QC Core Principles Widget -->
+          <div class="dashboard-card">
+            <h3><i class="fa-solid fa-circle-check"></i> 품질 관리(QC) 문서 핵심 3대 원칙</h3>
+            <div class="principles-container">
+              <div class="principle-item">
+                <div class="principle-num">01</div>
+                <div class="principle-info">
+                  <h4>법규 안전 고지 의무화</h4>
+                  <p>차량 결함이나 사용자의 오사용으로 인한 사고 시 법적 책임을 줄이기 위해 필수 안전 라벨과 표준 문구를 반드시 매뉴얼에 누락 없이 명시해야 합니다.</p>
+                </div>
+              </div>
+              <div class="principle-item">
+                <div class="principle-num">02</div>
+                <div class="principle-info">
+                  <h4>사용자 중심의 직관적 서술</h4>
+                  <p>수동태를 지양하고 능동태(Active voice)를 사용하며, 독자를 3인칭(the driver)이 아닌 직접 지칭인 'You'로 작성하여 가독성을 극대화합니다.</p>
+                </div>
+              </div>
+              <div class="principle-item">
+                <div class="principle-num">03</div>
+                <div class="principle-info">
+                  <h4>일관성 있는 기능 조작어 매칭</h4>
+                  <p>물리 버튼은 Press, 화면 터치는 Tap, 다이얼은 Turn을 사용하고, 기어는 Shift, 브레이크는 Engage 등으로 기능과 용어를 일관되게 규정합니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DOCUMENT VIEW -->
+    <section id="doc-view" class="view-section">
+      <div class="doc-layout">
+        
+        <!-- Left Column: Sidebar Navigation -->
+        <aside class="sidebar-left" id="sidebar-left">
+          <div class="sidebar-header">
+            <h3><i class="fa-solid fa-list"></i> 카테고리</h3>
+            <button id="close-sidebar-btn" class="close-sidebar-mobile-btn"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <nav class="sidebar-nav" id="sidebar-nav-container">
+            <!-- Dynamically populated from docs.json -->
+          </nav>
+        </aside>
+        
+        <!-- Backdrop overlay for mobile sidebar -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Center Column: Main Markdown Document Renderer -->
+        <article class="doc-body">
+          <div class="doc-breadcrumbs" id="doc-breadcrumbs">
+            <span>홈</span> &gt; <span>문서</span> &gt; <span class="active">로딩 중...</span>
+          </div>
+          
+          <div class="doc-meta-bar">
+            <h2 id="doc-main-title">문서 제목</h2>
+            <div class="doc-meta-info">
+              <span><i class="fa-regular fa-calendar"></i> 업데이트: 2026년 6월 6일</span>
+              <span><i class="fa-regular fa-clock"></i> 읽는 시간: <span id="reading-time">5</span>분</span>
+              <button id="print-doc-btn" class="meta-btn" title="인쇄 및 PDF 저장"><i class="fa-solid fa-print"></i> 인쇄</button>
+            </div>
+          </div>
+          
+          <!-- Rendered HTML Content Container -->
+          <div class="markdown-body" id="markdown-container">
+            <!-- parsed markdown goes here -->
+          </div>
+        </article>
+
+        <!-- Right Column: Document Outline / Table of Contents (TOC) -->
+        <aside class="sidebar-right">
+          <div class="toc-container">
+            <h4 class="toc-title">이 페이지의 구성</h4>
+            <ul class="toc-list" id="toc-list-container">
+              <!-- dynamically generated headers list -->
+            </ul>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Premium Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <p class="copyright">&copy; 2026 Quality Control Documentation Center. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- External Library CDNs -->
+  <!-- Markdown parser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+  <!-- HTML sanitizer to prevent XSS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
+  <!-- Prism JS core and language tools -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  
+  <!-- Custom Logic Script -->
+  <script src="app.js?v=1.1.1"></script>
+</body>
+</html>
