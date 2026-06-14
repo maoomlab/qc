@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     searchIndex: [],
     theme: 'light',
     isManualScrolling: false,
-    manualScrollTimeout: null
+    manualScrollTimeout: null,
+    clickedActiveId: null,
+    expectedScrollY: null
   };
 
   // DOM Elements
@@ -688,7 +690,19 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const el = document.getElementById(anchor);
         if (el) {
+          state.clickedActiveId = el.id;
+          const targetScrollY = el.getBoundingClientRect().top + window.scrollY - 100;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          state.expectedScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+
+          state.isManualScrolling = true;
+          if (state.manualScrollTimeout) clearTimeout(state.manualScrollTimeout);
+
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          state.manualScrollTimeout = setTimeout(() => {
+            state.isManualScrolling = false;
+          }, 800);
         }
       }, 300);
     } else {
@@ -786,6 +800,12 @@ document.addEventListener('DOMContentLoaded', () => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
         
+        // Save the target active ID and expected scroll position
+        state.clickedActiveId = heading.id;
+        const targetScrollY = heading.getBoundingClientRect().top + window.scrollY - 100;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        state.expectedScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+        
         // Disable scroll spy during manual smooth scrolling
         state.isManualScrolling = true;
         if (state.manualScrollTimeout) clearTimeout(state.manualScrollTimeout);
@@ -818,6 +838,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollContainer = window; // Since document scrolls globally on this layout
 
     const scrollSpyHandler = () => {
+      // Helper function to update active TOC link styling
+      const highlightActiveTOC = (activeId) => {
+        document.querySelectorAll('.toc-link').forEach(link => {
+          const hrefSection = link.href.substring(link.href.indexOf('?section=') + 9);
+          if (hrefSection === activeId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      };
+
+      if (state.clickedActiveId !== null && state.expectedScrollY !== null) {
+        const diff = Math.abs(window.scrollY - state.expectedScrollY);
+        if (diff < 15) {
+          // If the page scroll is still near the clicked target position, lock the highlight
+          highlightActiveTOC(state.clickedActiveId);
+          return;
+        } else {
+          // If the user scrolls away significantly, release the lock
+          state.clickedActiveId = null;
+          state.expectedScrollY = null;
+        }
+      }
+
       if (state.isManualScrolling) return; // Skip updating active item during manual click scrolling
       
       let currentActiveId = null;
@@ -831,14 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       if (currentActiveId) {
-        document.querySelectorAll('.toc-link').forEach(link => {
-          const hrefSection = link.href.substring(link.href.indexOf('?section=') + 9);
-          if (hrefSection === currentActiveId) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
+        highlightActiveTOC(currentActiveId);
       }
     };
 
