@@ -1053,11 +1053,12 @@ body {
 }
 
 .toc-title {
-  font-size: 0.8rem;
-  font-weight: 750;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  padding-left: 12px; /* Align with left border of the list */
 }
 
 .toc-list {
@@ -1075,51 +1076,47 @@ body {
 .toc-link {
   --depth-pad: 12px;
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.8125rem; /* Match RsPress 0.8125rem / 13px */
   color: var(--text-secondary);
   text-decoration: none;
-  padding: 6px 12px 6px var(--depth-pad);
-  border-left: 2px solid transparent;
-  margin-left: -1px;
+  padding: 5px 12px 5px var(--depth-pad);
+  border-left: none; /* Reverted Toss indicator */
+  margin-left: 0;
+  border-radius: 4px 0 0 4px; /* Left rounded corners, matching RsPress */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .toc-link:hover {
   color: var(--text-primary);
-  padding-left: calc(var(--depth-pad) + 4px);
+  background-color: var(--bg-secondary); /* Muted gray hover background */
 }
 
 .toc-link.active {
   color: var(--accent-color);
-  font-weight: 700; /* Bold when active */
-  border-left-color: var(--accent-color);
+  background-color: rgba(49, 130, 246, 0.08); /* Soft blue brand tint background, matching var(--rp-c-brand-tint) */
+  font-weight: 600; /* Semibold for the active item */
 }
 
-/* TOC Depth margins and weights for nested headings */
+/* Dark mode adjustments for active background tint */
+[data-theme="dark"] .toc-link.active {
+  background-color: rgba(49, 130, 246, 0.16);
+}
+
+/* TOC Depth margins for nested headings matching RsPress */
 .toc-depth-1 {
-  font-weight: 700; /* Bold only for top-level headings (H1) */
+  --depth-pad: 12px;
 }
 
-.toc-depth-2,
+.toc-depth-2 {
+  --depth-pad: 24px; /* Shifted right by 12px relative to H1 */
+}
+
 .toc-depth-3 {
-  font-weight: 400; /* Regular weight for nested headings */
-}
-
-.toc-branch {
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  opacity: 0.8;
-  margin-right: 4px;
-  white-space: pre;
-}
-
-.toc-link.active .toc-branch {
-  color: inherit;
-  opacity: 1;
+  --depth-pad: 36px; /* Shifted right by 24px relative to H1 */
 }
 
 /* Overlay */

@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activeDocId: null,
     docsCache: {},
     searchIndex: [],
-    theme: 'light',
-    isManualScrolling: false,
-    manualScrollTimeout: null
+    theme: 'light'
   };
 
   // DOM Elements
@@ -754,73 +752,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // Table of Contents (TOC) & Scroll Spy
   // ==========================================================================
-  function getHeadingTreePrefix(index, headings) {
-    const currentHeading = headings[index];
-    const currentLevel = parseInt(currentHeading.tagName.substring(1));
-    
-    if (currentLevel === 1) {
-      return "";
-    }
-    
-    let prefix = "";
-    
-    // To compute the state of ancestor at level k (where 2 <= k < currentLevel)
-    for (let k = 2; k < currentLevel; k++) {
-      let ancestorHasSiblings = false;
-      let ancestorIdx = -1;
-      for (let i = index - 1; i >= 0; i--) {
-        const hLevel = parseInt(headings[i].tagName.substring(1));
-        if (hLevel < k) {
-          break;
-        }
-        if (hLevel === k) {
-          ancestorIdx = i;
-          break;
-        }
-      }
-      
-      if (ancestorIdx !== -1) {
-        for (let j = ancestorIdx + 1; j < headings.length; j++) {
-          const nextLevel = parseInt(headings[j].tagName.substring(1));
-          if (nextLevel < k) {
-            break;
-          }
-          if (nextLevel === k) {
-            ancestorHasSiblings = true;
-            break;
-          }
-        }
-      }
-      
-      if (ancestorHasSiblings) {
-        prefix += "│  ";
-      } else {
-        prefix += "   ";
-      }
-    }
-    
-    // Check if current item has subsequent siblings at currentLevel
-    let hasSiblings = false;
-    for (let j = index + 1; j < headings.length; j++) {
-      const nextLevel = parseInt(headings[j].tagName.substring(1));
-      if (nextLevel < currentLevel) {
-        break;
-      }
-      if (nextLevel === currentLevel) {
-        hasSiblings = true;
-        break;
-      }
-    }
-    
-    if (hasSiblings) {
-      prefix += "├─ ";
-    } else {
-      prefix += "└─ ";
-    }
-    
-    return " " + prefix; // Prepend a space as in user spec
-  }
-
   function generateTOC() {
     tocListContainer.innerHTML = '';
     
@@ -847,32 +778,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const a = document.createElement('a');
       a.className = `toc-link toc-depth-${heading.tagName.substring(1)}`;
+      a.textContent = heading.textContent;
       a.href = `${window.location.hash.split('?')[0]}?section=${heading.id}`;
-      
-      // Build tree prefix nodes
-      const prefix = getHeadingTreePrefix(idx, headings);
-      if (prefix) {
-        const spanPrefix = document.createElement('span');
-        spanPrefix.className = 'toc-branch';
-        spanPrefix.textContent = prefix;
-        a.appendChild(spanPrefix);
-      }
-      
-      const spanText = document.createElement('span');
-      spanText.className = 'toc-text';
-      spanText.textContent = heading.textContent;
-      a.appendChild(spanText);
       
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        
-        // Disable scroll spy during manual smooth scrolling
-        state.isManualScrolling = true;
-        if (state.manualScrollTimeout) clearTimeout(state.manualScrollTimeout);
-        
-        // Highlight active link immediately and color it bold/blue
-        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
-        a.classList.add('active');
         
         // Add parameter to URL hash silently without trigger re-load
         const cleanHash = window.location.hash.split('?')[0];
@@ -880,9 +790,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        state.manualScrollTimeout = setTimeout(() => {
-          state.isManualScrolling = false;
-        }, 800);
+        // Highlight active link
+        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+        a.classList.add('active');
       });
       
       li.appendChild(a);
@@ -898,8 +808,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollContainer = window; // Since document scrolls globally on this layout
 
     const scrollSpyHandler = () => {
-      if (state.isManualScrolling) return; // Skip updating active item during manual click scrolling
-      
       let currentActiveId = null;
       const triggerOffset = 150; // Scroll offset
       
