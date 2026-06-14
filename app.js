@@ -854,14 +854,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollSpyHandler = () => {
       // Helper function to update active TOC link styling
       const highlightActiveTOC = (activeId) => {
+        let activeLink = null;
         document.querySelectorAll('.toc-link').forEach(link => {
           const hrefSection = link.href.substring(link.href.indexOf('?section=') + 9);
           if (hrefSection === activeId) {
-            link.classList.add('active');
+            if (!link.classList.contains('active')) {
+              link.classList.add('active');
+              activeLink = link;
+            }
           } else {
             link.classList.remove('active');
           }
         });
+
+        // Smoothly scroll the active TOC link into view within the scrollable sidebar panel
+        if (activeLink) {
+          activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       };
 
       if (state.clickedActiveId !== null) {
