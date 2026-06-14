@@ -1091,8 +1091,13 @@ body {
 }
 
 .toc-link:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-secondary); /* Muted gray hover background */
+  color: var(--accent-color);
+  background-color: rgba(49, 130, 246, 0.08); /* Soft blue brand tint background */
+  font-weight: 600;
+}
+
+[data-theme="dark"] .toc-link:hover {
+  background-color: rgba(49, 130, 246, 0.16);
 }
 
 .toc-link.active {
