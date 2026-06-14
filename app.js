@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     activeDocId: null,
     docsCache: {},
     searchIndex: [],
-    theme: 'light'
+    theme: 'light',
+    isManualScrolling: false,
+    manualScrollTimeout: null
   };
 
   // DOM Elements
@@ -784,15 +786,23 @@ document.addEventListener('DOMContentLoaded', () => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
         
+        // Disable scroll spy during manual smooth scrolling
+        state.isManualScrolling = true;
+        if (state.manualScrollTimeout) clearTimeout(state.manualScrollTimeout);
+        
+        // Highlight active link immediately
+        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+        a.classList.add('active');
+        
         // Add parameter to URL hash silently without trigger re-load
         const cleanHash = window.location.hash.split('?')[0];
         history.pushState(null, null, `${cleanHash}?section=${heading.id}`);
         
         heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        // Highlight active link
-        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
-        a.classList.add('active');
+        state.manualScrollTimeout = setTimeout(() => {
+          state.isManualScrolling = false;
+        }, 800);
       });
       
       li.appendChild(a);
@@ -808,6 +818,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollContainer = window; // Since document scrolls globally on this layout
 
     const scrollSpyHandler = () => {
+      if (state.isManualScrolling) return; // Skip updating active item during manual click scrolling
+      
       let currentActiveId = null;
       const triggerOffset = 150; // Scroll offset
       
