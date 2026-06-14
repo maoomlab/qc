@@ -1266,13 +1266,20 @@ body {
 .markdown-body ul,
 .markdown-body ol {
   margin-top: 0;
-  margin-bottom: 1.2em;
+  margin-bottom: 0.5em;
   padding-left: 20px;
 }
 
 .markdown-body li {
   margin-bottom: 0.5em;
   color: var(--text-secondary);
+}
+
+/* Nested lists layout spacing reset */
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin-top: 0.3em;
+  margin-bottom: 0;
 }
 
 /* Remove default bullet for checkbox lists */
