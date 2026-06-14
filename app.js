@@ -17,6 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
     expectedScrollY: null
   };
 
+  // Release TOC highlight lock on direct user scroll interaction
+  const releaseTOCLock = () => {
+    state.clickedActiveId = null;
+    state.expectedScrollY = null;
+  };
+  window.addEventListener('wheel', releaseTOCLock, { passive: true });
+  window.addEventListener('touchmove', releaseTOCLock, { passive: true });
+  window.addEventListener('keydown', (e) => {
+    const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', ' ', 'Home', 'End'];
+    if (keys.includes(e.key)) {
+      releaseTOCLock();
+    }
+  }, { passive: true });
+
   // DOM Elements
   const headerSearch = document.getElementById('header-search');
   const clearSearchBtn = document.getElementById('clear-search-btn');
@@ -850,17 +864,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       };
 
-      if (state.clickedActiveId !== null && state.expectedScrollY !== null) {
-        const diff = Math.abs(window.scrollY - state.expectedScrollY);
-        if (diff < 15) {
-          // If the page scroll is still near the clicked target position, lock the highlight
+      if (state.clickedActiveId !== null) {
+        if (state.isManualScrolling) {
           highlightActiveTOC(state.clickedActiveId);
           return;
-        } else {
-          // If the user scrolls away significantly, release the lock
-          state.clickedActiveId = null;
-          state.expectedScrollY = null;
         }
+        if (state.expectedScrollY !== null) {
+          const diff = Math.abs(window.scrollY - state.expectedScrollY);
+          if (diff < 50) { // Extended threshold to 50px to handle OS bounce and minor scroll offset differences
+            highlightActiveTOC(state.clickedActiveId);
+            return;
+          }
+        }
+        // Release lock if scroll position changed significantly
+        state.clickedActiveId = null;
+        state.expectedScrollY = null;
       }
 
       if (state.isManualScrolling) return; // Skip updating active item during manual click scrolling
