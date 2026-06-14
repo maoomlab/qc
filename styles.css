@@ -1433,7 +1433,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5em 0;
-  font-size: 0.88rem;
+  font-size: inherit;
   box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -1451,7 +1451,7 @@ body {
   background-color: var(--bg-tertiary);
   font-weight: 700;
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: inherit;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
