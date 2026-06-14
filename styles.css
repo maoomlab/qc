@@ -1095,24 +1095,31 @@ body {
 
 .toc-link.active {
   color: var(--accent-color);
-  font-weight: 600;
+  font-weight: 700; /* Bold when active */
   border-left-color: var(--accent-color);
 }
 
 /* TOC Depth margins and weights for nested headings */
 .toc-depth-1 {
-  --depth-pad: 12px;
   font-weight: 700; /* Bold only for top-level headings (H1) */
 }
 
-.toc-depth-2 {
-  --depth-pad: 22px;
-  font-weight: 400; /* Regular weight for sub-headings (H2) */
+.toc-depth-2,
+.toc-depth-3 {
+  font-weight: 400; /* Regular weight for nested headings */
 }
 
-.toc-depth-3 {
-  --depth-pad: 32px;
-  font-weight: 400; /* Regular weight for sub-headings (H3) */
+.toc-branch {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  opacity: 0.8;
+  margin-right: 4px;
+  white-space: pre;
+}
+
+.toc-link.active .toc-branch {
+  color: inherit;
+  opacity: 1;
 }
 
 /* Overlay */
