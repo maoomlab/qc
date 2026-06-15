@@ -100,16 +100,50 @@ function scanFolder() {
     try {
       const fileContent = fs.readFileSync(path.join(ROOT_DIR, fileInfo.relativePath), 'utf-8');
       
-      // Title: Extract first `# ` heading
-      const titleMatch = fileContent.match(/^#\s+(.+)$/m);
-      const title = replaceEmojiShortcodes(titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md'));
+      let title = '';
+      let description = '';
+      let markdownBody = fileContent;
       
-      // Description: Extract first non-empty paragraph
-      const paragraphs = fileContent.split('\n')
-        .map(p => p.trim())
-        .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
+      // Parse Front Matter if present
+      const frontMatterMatch = fileContent.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      if (frontMatterMatch) {
+        const fmContent = frontMatterMatch[1];
+        markdownBody = fileContent.substring(frontMatterMatch[0].length);
+        
+        // Parse key-value pairs
+        const lines = fmContent.split('\n');
+        lines.forEach(line => {
+          const colonIdx = line.indexOf(':');
+          if (colonIdx > 0) {
+            const key = line.substring(0, colonIdx).trim().toLowerCase();
+            let val = line.substring(colonIdx + 1).trim();
+            // Remove quotes if present
+            if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+              val = val.substring(1, val.length - 1);
+            }
+            if (key === 'title') {
+              title = val;
+            } else if (key === 'description') {
+              description = val;
+            }
+          }
+        });
+      }
       
-      const description = replaceEmojiShortcodes(paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.');
+      // If title or description is missing from front matter, extract automatically as fallback
+      if (!title) {
+        const titleMatch = markdownBody.match(/^#\s+(.+)$/m);
+        title = titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md');
+      }
+      title = replaceEmojiShortcodes(title);
+      
+      if (!description) {
+        const paragraphs = markdownBody.split('\n')
+          .map(p => p.trim())
+          .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
+        description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
+      }
+      description = replaceEmojiShortcodes(description);
       
       // Category routing for original files at root
       let finalCategory = fileInfo.category;

@@ -1181,6 +1181,14 @@ body {
   color: var(--text-primary);
 }
 
+.doc-main-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: -4px;
+  margin-bottom: 16px;
+}
+
 .doc-meta-info {
   display: flex;
   align-items: center;

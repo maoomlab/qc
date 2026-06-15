@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarNavContainer = document.getElementById('sidebar-nav-container');
   const markdownContainer = document.getElementById('markdown-container');
   const docMainTitle = document.getElementById('doc-main-title');
+  const docMainDesc = document.getElementById('doc-main-desc');
   const docBreadcrumbs = document.getElementById('doc-breadcrumbs');
   const readingTimeSpan = document.getElementById('reading-time');
   const tocListContainer = document.getElementById('toc-list-container');
@@ -554,9 +555,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Update breadcrumbs and active document title
+    // Update breadcrumbs and active document title & description
     docMainTitle.textContent = activeItem.title;
     mobileActiveDoc.textContent = activeItem.title;
+    if (docMainDesc) {
+      docMainDesc.textContent = activeItem.description || '';
+      docMainDesc.style.display = activeItem.description ? 'block' : 'none';
+    }
     docBreadcrumbs.innerHTML = `
       <span onclick="window.location.hash='#/'">홈</span> &gt; 
       <span>문서</span> &gt; 
@@ -586,6 +591,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderMarkdown(markdownText, docId) {
+    // Strip Front Matter metadata block from rendered output
+    let cleanMarkdown = markdownText;
+    const frontMatterMatch = markdownText.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (frontMatterMatch) {
+      cleanMarkdown = markdownText.substring(frontMatterMatch[0].length);
+    }
+
     // Set custom marked.js renderer rules
     const renderer = new marked.Renderer();
     
@@ -677,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
       headerIds: true
     });
     
-    let rawHtml = marked.parse(markdownText);
+    let rawHtml = marked.parse(cleanMarkdown);
     
     // Sanitize generated HTML to prevent vulnerabilities
     let cleanHtml = DOMPurify.sanitize(rawHtml, {
