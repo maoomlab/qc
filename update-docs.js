@@ -98,51 +98,89 @@ function scanFolder() {
 
   mdFiles.forEach(fileInfo => {
     try {
-      const fileContent = fs.readFileSync(path.join(ROOT_DIR, fileInfo.relativePath), 'utf-8');
+      const absoluteMdPath = path.join(ROOT_DIR, fileInfo.relativePath);
+      const fileContent = fs.readFileSync(absoluteMdPath, 'utf-8');
       
       let title = '';
       let description = '';
       let markdownBody = fileContent;
       
-      // Parse Front Matter if present
-      const frontMatterMatch = fileContent.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-      if (frontMatterMatch) {
-        const fmContent = frontMatterMatch[1];
-        markdownBody = fileContent.substring(frontMatterMatch[0].length);
+      // Define path of the separate metadata JSON file (e.g. EU-Legal/EU_Legal.json)
+      const baseNameWithoutExt = fileInfo.relativePath.substring(0, fileInfo.relativePath.lastIndexOf('.'));
+      const jsonMetaPath = path.join(ROOT_DIR, baseNameWithoutExt + '.json');
+      // Define path of the separate metadata markdown file (e.g. EU-Legal/EU_Legal.meta.md)
+      const mdMetaPath = path.join(ROOT_DIR, baseNameWithoutExt + '.meta.md');
+      
+      if (fs.existsSync(jsonMetaPath)) {
+        // Option 1: Parse from a separate metadata JSON file
+        try {
+          const jsonContent = JSON.parse(fs.readFileSync(jsonMetaPath, 'utf-8'));
+          title = jsonContent.title || '';
+          description = jsonContent.description || '';
+        } catch (e) {
+          console.error(`Failed to parse separate JSON metadata at ${jsonMetaPath}:`, e);
+        }
+      } else if (fs.existsSync(mdMetaPath)) {
+        // Option 2: Parse from a separate metadata markdown file
+        try {
+          const metaContent = fs.readFileSync(mdMetaPath, 'utf-8');
+          const titleMatch = metaContent.match(/^#\s+(.+)$/m);
+          title = titleMatch ? titleMatch[1].trim() : '';
+          
+          const paragraphs = metaContent.split('\n')
+            .map(p => p.trim())
+            .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
+          description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '';
+        } catch (e) {
+          console.error(`Failed to parse separate markdown metadata at ${mdMetaPath}:`, e);
+        }
+      }
+      
+      // Fallback: If not parsed from separate files, check for embedded Front Matter or auto-extract
+      if (!title || !description) {
+        let embeddedTitle = '';
+        let embeddedDescription = '';
         
-        // Parse key-value pairs
-        const lines = fmContent.split('\n');
-        lines.forEach(line => {
-          const colonIdx = line.indexOf(':');
-          if (colonIdx > 0) {
-            const key = line.substring(0, colonIdx).trim().toLowerCase();
-            let val = line.substring(colonIdx + 1).trim();
-            // Remove quotes if present
-            if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-              val = val.substring(1, val.length - 1);
+        const frontMatterMatch = fileContent.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+        if (frontMatterMatch) {
+          markdownBody = fileContent.substring(frontMatterMatch[0].length);
+          const lines = frontMatterMatch[1].split('\n');
+          lines.forEach(line => {
+            const colonIdx = line.indexOf(':');
+            if (colonIdx > 0) {
+              const key = line.substring(0, colonIdx).trim().toLowerCase();
+              let val = line.substring(colonIdx + 1).trim();
+              if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+                val = val.substring(1, val.length - 1);
+              }
+              if (key === 'title') embeddedTitle = val;
+              else if (key === 'description') embeddedDescription = val;
             }
-            if (key === 'title') {
-              title = val;
-            } else if (key === 'description') {
-              description = val;
-            }
+          });
+        }
+        
+        if (!title) {
+          if (embeddedTitle) {
+            title = embeddedTitle;
+          } else {
+            const titleMatch = markdownBody.match(/^#\s+(.+)$/m);
+            title = titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md');
           }
-        });
+        }
+        
+        if (!description) {
+          if (embeddedDescription) {
+            description = embeddedDescription;
+          } else {
+            const paragraphs = markdownBody.split('\n')
+              .map(p => p.trim())
+              .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
+            description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
+          }
+        }
       }
       
-      // If title or description is missing from front matter, extract automatically as fallback
-      if (!title) {
-        const titleMatch = markdownBody.match(/^#\s+(.+)$/m);
-        title = titleMatch ? titleMatch[1].trim() : path.basename(fileInfo.relativePath, '.md');
-      }
       title = replaceEmojiShortcodes(title);
-      
-      if (!description) {
-        const paragraphs = markdownBody.split('\n')
-          .map(p => p.trim())
-          .filter(p => p.length > 15 && !p.startsWith('#') && !p.startsWith('>') && !p.startsWith('|') && !p.startsWith('-') && !p.startsWith('*') && !p.startsWith('!'));
-        description = paragraphs.length > 0 ? paragraphs[0].substring(0, 140).trim() + '...' : '문서의 세부 사항 및 작성 가이드 내용입니다.';
-      }
       description = replaceEmojiShortcodes(description);
       
       // Category routing for original files at root
