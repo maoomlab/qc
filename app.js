@@ -719,6 +719,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     markdownContainer.innerHTML = cleanHtml;
     
+    // Process markdown images (resolve paths, add classes, setup error fallback cards)
+    processMarkdownImages(docId);
+    
     // Process code blocks for syntax highlighting and copy buttons
     processCodeBlocks();
     
@@ -773,6 +776,53 @@ document.addEventListener('DOMContentLoaded', () => {
           imageModal.classList.add('open');
         }
       });
+    });
+  }
+
+  // Post-process all images inside the markdown container (standard markdown and raw HTML img tags)
+  function processMarkdownImages(docId) {
+    let activeItem = null;
+    if (state.config) {
+      state.config.categories.forEach(cat => {
+        const found = cat.items.find(i => i.id === docId);
+        if (found) activeItem = found;
+      });
+    }
+
+    const images = markdownContainer.querySelectorAll('img');
+    images.forEach(img => {
+      // 1. Add class for styling and query ease
+      if (!img.classList.contains('markdown-image')) {
+        img.classList.add('markdown-image');
+      }
+      
+      // 2. Resolve relative path based on active document directory
+      const src = img.getAttribute('src');
+      if (src && activeItem && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/') && !src.startsWith('data:')) {
+        const fileParts = activeItem.file.split('/');
+        fileParts.pop(); // remove filename
+        const dirPath = fileParts.join('/');
+        if (dirPath) {
+          let cleanHref = src;
+          if (cleanHref.startsWith('./')) {
+            cleanHref = cleanHref.substring(2);
+          }
+          const resolvedHref = `${dirPath}/${cleanHref}`;
+          img.src = resolvedHref;
+        }
+      }
+      
+      // 3. Programmatically attach onerror fallback handler if not already present
+      if (!img.onerror) {
+        img.onerror = function() {
+          handleImageError(img, img.src, img.alt || '');
+        };
+        
+        // If image has already failed to load before we bound the handler
+        if (img.complete && img.naturalWidth === 0) {
+          handleImageError(img, img.src, img.alt || '');
+        }
+      }
     });
   }
 
