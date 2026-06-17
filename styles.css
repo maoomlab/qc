@@ -1501,7 +1501,7 @@ body {
 }
 
 /* Responsive Images in Markdown Content */
-.markdown-body img {
+.markdown-body img.markdown-image {
   max-width: 100%;
   height: auto;
   display: block;
@@ -1512,7 +1512,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.markdown-body img:hover {
+.markdown-body img.markdown-image:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }

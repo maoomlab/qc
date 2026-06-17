@@ -761,11 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set up click-to-zoom modal listeners on content images
   function setupImageZoom() {
-    const images = markdownContainer.querySelectorAll('img');
+    // Select only actual images rendered from markdown (which have the 'markdown-image' class)
+    const images = markdownContainer.querySelectorAll('img.markdown-image');
     images.forEach(img => {
-      // Skip clicking on default placeholder icons inside fallback cards
-      if (img.classList.contains('image-fallback-icon')) return;
-      
       img.addEventListener('click', () => {
         if (imageModal && imageModalContent) {
           imageModalContent.src = img.src;
