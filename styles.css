@@ -1339,7 +1339,7 @@ body {
 
 /* Code Highlighting styling */
 .markdown-body code {
-  font-family: var(--font-mono);
+  font-family: var(--font-primary);
   font-size: 0.85em;
   background-color: var(--bg-tertiary);
   color: #ef4444; /* Standard inline code accent */
@@ -1363,15 +1363,18 @@ body {
   white-space: pre-wrap; /* Wrap long lines */
   word-break: break-all; /* Break on any character */
   overflow-x: hidden; /* Prevent horizontal scrollbars */
+  font-family: var(--font-primary) !important; /* Match document primary font */
   position: relative;
 }
 
-.markdown-body pre code {
+.markdown-body pre code,
+.markdown-body pre span {
   color: #e2e8f0;
   background-color: transparent;
   padding: 0;
   font-size: 0.85rem;
   line-height: 1.5;
+  font-family: var(--font-primary) !important; /* Match document primary font and override PrismJS */
 }
 
 /* Code block copy button styling */
@@ -1423,7 +1426,7 @@ body {
 .markdown-body blockquote p {
   margin: 0 !important;
   color: inherit !important;
-  font-size: 0.92rem;
+  font-size: inherit;
 }
 
 /* Dynamic styling for warning/note alert blockquotes */
