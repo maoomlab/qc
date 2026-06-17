@@ -29,7 +29,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (keys.includes(e.key)) {
       releaseTOCLock();
     }
+    
+    // Close image modal on ESC key
+    if (e.key === 'Escape' && imageModal && imageModal.classList.contains('open')) {
+      imageModal.classList.remove('open');
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+      }, 200);
+    }
   }, { passive: true });
+
+  // Close image zoom modal when clicked anywhere inside it
+  if (imageModal) {
+    imageModal.addEventListener('click', () => {
+      imageModal.classList.remove('open');
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+      }, 200);
+    });
+  }
 
   // DOM Elements
   const headerSearch = document.getElementById('header-search');
@@ -56,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const readingTimeSpan = document.getElementById('reading-time');
   const tocListContainer = document.getElementById('toc-list-container');
   const printDocBtn = document.getElementById('print-doc-btn');
+  const imageModal = document.getElementById('image-modal');
+  const imageModalContent = document.getElementById('image-modal-content');
   
   // Mobile elements
   const mobileSidebarToggle = document.getElementById('mobile-sidebar-toggle');
@@ -702,6 +722,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Process code blocks for syntax highlighting and copy buttons
     processCodeBlocks();
     
+    // Setup Image Zoom/Modal listeners
+    setupImageZoom();
+    
     // Calculate Reading Time
     calculateReadingTime(markdownText);
     
@@ -734,6 +757,25 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       window.scrollTo(0, 0);
     }
+  }
+
+  // Set up click-to-zoom modal listeners on content images
+  function setupImageZoom() {
+    const images = markdownContainer.querySelectorAll('img');
+    images.forEach(img => {
+      // Skip clicking on default placeholder icons inside fallback cards
+      if (img.classList.contains('image-fallback-icon')) return;
+      
+      img.addEventListener('click', () => {
+        if (imageModal && imageModalContent) {
+          imageModalContent.src = img.src;
+          imageModal.style.display = 'flex';
+          // Trigger browser reflow for transitions
+          imageModal.offsetHeight;
+          imageModal.classList.add('open');
+        }
+      });
+    });
   }
 
   // Code blocks post-processing: Adding language headers and copy buttons
