@@ -625,8 +625,11 @@ document.addEventListener('DOMContentLoaded', () => {
           if (cleanHref.startsWith('./')) {
             cleanHref = cleanHref.substring(2);
           }
-          const resolvedHref = `${dirPath}/${cleanHref}`;
-          img.src = resolvedHref;
+          // Only prepend dirPath if it hasn't been prepended already by the marked renderer
+          if (!cleanHref.startsWith(dirPath + '/')) {
+            const resolvedHref = `${dirPath}/${cleanHref}`;
+            img.src = resolvedHref;
+          }
         }
       }
       
