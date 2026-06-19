@@ -316,6 +316,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cat.items.sort((a, b) => a.title.localeCompare(b.title));
       });
       
+      if (categories.length === 0) {
+        throw new Error('No markdown files found via directory scan');
+      }
+      
       return { categories };
       
     } catch (error) {
