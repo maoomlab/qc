@@ -17,38 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     expectedScrollY: null
   };
 
-  // Release TOC highlight lock on direct user scroll interaction
-  const releaseTOCLock = () => {
-    state.clickedActiveId = null;
-    state.expectedScrollY = null;
-  };
-  window.addEventListener('wheel', releaseTOCLock, { passive: true });
-  window.addEventListener('touchmove', releaseTOCLock, { passive: true });
-  window.addEventListener('keydown', (e) => {
-    const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', ' ', 'Home', 'End'];
-    if (keys.includes(e.key)) {
-      releaseTOCLock();
-    }
-    
-    // Close image modal on ESC key
-    if (e.key === 'Escape' && imageModal && imageModal.classList.contains('open')) {
-      imageModal.classList.remove('open');
-      setTimeout(() => {
-        imageModal.style.display = 'none';
-      }, 200);
-    }
-  }, { passive: true });
-
-  // Close image zoom modal when clicked anywhere inside it
-  if (imageModal) {
-    imageModal.addEventListener('click', () => {
-      imageModal.classList.remove('open');
-      setTimeout(() => {
-        imageModal.style.display = 'none';
-      }, 200);
-    });
-  }
-
   // DOM Elements
   const headerSearch = document.getElementById('header-search');
   const clearSearchBtn = document.getElementById('clear-search-btn');
@@ -83,6 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarLeft = document.getElementById('sidebar-left');
   const sidebarOverlay = document.getElementById('sidebar-overlay');
   const mobileActiveDoc = document.querySelector('.mobile-active-doc');
+
+
+  // Release TOC highlight lock on direct user scroll interaction
+  const releaseTOCLock = () => {
+    state.clickedActiveId = null;
+    state.expectedScrollY = null;
+  };
+  window.addEventListener('wheel', releaseTOCLock, { passive: true });
+  window.addEventListener('touchmove', releaseTOCLock, { passive: true });
+  window.addEventListener('keydown', (e) => {
+    const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', ' ', 'Home', 'End'];
+    if (keys.includes(e.key)) {
+      releaseTOCLock();
+    }
+    
+    // Close image modal on ESC key
+    if (e.key === 'Escape' && imageModal && imageModal.classList.contains('open')) {
+      imageModal.classList.remove('open');
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+      }, 200);
+    }
+  }, { passive: true });
+
+  // Close image zoom modal when clicked anywhere inside it
+  if (imageModal) {
+    imageModal.addEventListener('click', () => {
+      imageModal.classList.remove('open');
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+      }, 200);
+    });
+  }
+
+
 
   // Emoji Shortcode Translation Map
   const emojiMap = {
@@ -212,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSidebarMobile();
     
     // Reset active header links
-    navHome.classList.remove('active');
+    if (navHome) navHome.classList.remove('active');
     navDocsBtn.classList.remove('active');
     
     if (hash === '#/' || hash === '') {
@@ -222,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       landingView.classList.add('active');
       docView.classList.remove('active');
-      navHome.classList.add('active');
+      if (navHome) navHome.classList.add('active');
       document.title = "QC Document Portal";
       window.scrollTo(0, 0);
     } else if (hash.startsWith('#/docs/')) {
